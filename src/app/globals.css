@@ -9,6 +9,44 @@ body {
 }
 
 :root {
-  --font-space: "Space Grotesk", sans-serif;
-  --font-figtree: "Figtree", sans-serif;
+  --font-display: var(--font-jakarta);
+  --font-mono: var(--font-mono);
+}
+
+@keyframes floatPanel {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes blinkCursor {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: blinkCursor 1s infinite;
+}
+
+body {
+  font-family: var(--font-jakarta);
+}
+
+.font-mono-custom {
+  font-family: var(--font-mono);
 }

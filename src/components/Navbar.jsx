@@ -1,65 +1,107 @@
-export default function Navbar() {
-  return (
-    <header className="fixed top-0 left-0 w-full z-50">
-      <div className="max-w-[1600px] mx-auto px-[40px] pt-[32px]">
+"use client";
 
-        <div className="flex items-center justify-between">
+import Link from "next/link";
+
+export default function Navbar() {
+
+  const navItems = [
+                { name: "Work", href: "/work" },
+                { name: "About", href: "/about" }, 
+                { name: "Services", href: "/services" },
+                { name: "Lab", href: "/lab" },
+                { name: "Contact", href: "/contact" },
+                              ];
+                              
+  return (
+    <header style={{ position: "fixed", top: 0, left: 0, width: "100%", zIndex: 50, backdropFilter: "blur(20px)", backgroundColor: "rgba(0,0,0,0.4)" }}>
+      <div style={{ padding: "16px 60px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
           {/* Logo */}
-          <div className="-ml-[20px] text-white text-[22px] font-bold tracking-[-0.03em]">
-            HK<span className="text-[#D7FF00]">.</span>
-          </div>
+          <Link
+  href="/"
+  style={{
+    color: "white",
+    fontSize: "26px",
+    fontWeight: "bold",
+    letterSpacing: "-0.03em",
+    textDecoration: "none",
+    transition: "all 0.3s ease",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.textShadow = "0 0 12px rgba(215,255,0,0.5)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.textShadow = "none";
+  }}
+>
+  HK<span style={{ color: "#D7FF00" }}>.</span>
+</Link>
 
           {/* Right Side */}
-          <div className="flex items-center gap-[80px]">
-
+          <div style={{ display: "flex", alignItems: "center", gap: "80px" }}>
             <nav>
-              <ul className="flex items-center gap-[42px] text-[14px] text-[#686868] uppercase tracking-[0.08em]">
+              <ul
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "46px",
+    fontSize: "16px",
+    color: "#686868",
+    letterSpacing: "0.08em",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    fontFamily: "var(--font-geist-mono)",
+  }}
+>
 
-                <li className="cursor-pointer hover:text-white transition-all duration-300">
-                  Work
-                </li>
-
-                <li className="cursor-pointer hover:text-white transition-all duration-300">
-                  About
-                </li>
-
-                <li className="cursor-pointer hover:text-white transition-all duration-300">
-                  Services
-                </li>
-
-                <li className="cursor-pointer hover:text-white transition-all duration-300">
-                  Lab
-                </li>
-
-                <li className="cursor-pointer hover:text-white transition-all duration-300">
-                  Contact
-                </li>
-
+                {navItems.map((item) => (
+  <li
+    key={item.name}
+    style={{
+      cursor: "pointer",
+      transition: "color 0.3s",
+    }}
+    onMouseEnter={(e) => (e.target.style.color = "white")}
+    onMouseLeave={(e) => (e.target.style.color = "#686868")}
+  >
+    <Link
+      href={item.href}
+      style={{
+        color: "inherit",
+        textDecoration: "none",
+      }}
+    >
+      {item.name}
+    </Link>
+  </li>
+))}
               </ul>
             </nav>
 
             <button
-              className="
-              h-[52px]
-              px-[32px]
-              rounded-full
-              bg-[#D7FF00]
-              text-black
-              text-[15px]
-              font-medium
-              hover:scale-[1.03]
-              transition-all
-              duration-300
-              "
-            >
-              Let's Talk 
+  style={{
+    height: "52px",
+    padding: "0 32px",
+    borderRadius: "999px",
+    backgroundColor: "#D7FF00",
+    color: "black",
+    fontSize: "16px",
+    fontWeight: "600",
+    border: "none",
+    cursor: "pointer",
+    transition: "transform 0.3s",
+    fontFamily: "var(--font-geist-mono)",
+    letterSpacing: "0.05em",
+  }}
+              onMouseEnter={e => e.target.style.transform = "scale(1.03)"}
+              onMouseLeave={e => e.target.style.transform = "scale(1)"}>
+              Let's Talk ↗
             </button>
-
           </div>
 
         </div>
-
       </div>
     </header>
   );
