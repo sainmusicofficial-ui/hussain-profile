@@ -376,10 +376,10 @@ export default function Contact() {
                   label: "Email",
                   value: (
                     <a
-                      href="mailto:hello@hussainkhan.design"
+                      href="mailto:hello@hussainkhan.co.in"
                       style={{ fontSize: "14px", color: COLORS.content, textDecoration: "none" }}
                     >
-                      hello@hussainkhan.design
+                      hello@hussainkhan.co.in
                     </a>
                   ),
                 },
