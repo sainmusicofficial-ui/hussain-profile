@@ -37,6 +37,23 @@ function FadeIn({ children, delay = 0, direction = "up" }) {
   );
 }
 
+// ─── Responsive Hook ───────────────────────────────────────────────────────────
+function useBreakpoint() {
+  const [bp, setBp] = useState("desktop");
+  useEffect(() => {
+    const check = () => {
+      const w = window.innerWidth;
+      if (w < 640) setBp("mobile");
+      else if (w <= 1024) setBp("tablet");
+      else setBp("desktop");
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return bp;
+}
+
 // ─── Services Data ────────────────────────────────────────────────────────────
 const services = [
   {
@@ -96,17 +113,20 @@ const services = [
 ];
 
 // ─── Service Card ─────────────────────────────────────────────────────────────
-function ServiceCard({ service, index }) {
+function ServiceCard({ service, index, bp }) {
   const [isOpen, setIsOpen] = useState(false);
   const Icon = service.icon;
   const [contentHeight, setContentHeight] = useState(0);
   const contentRef = useRef(null);
 
+  const isMobile = bp === "mobile";
+  const isTablet = bp === "tablet";
+
   useEffect(() => {
     if (contentRef.current) {
       setContentHeight(isOpen ? contentRef.current.scrollHeight : 0);
     }
-  }, [isOpen]);
+  }, [isOpen, bp]);
 
   return (
     <FadeIn delay={index * 60}>
@@ -117,41 +137,50 @@ function ServiceCard({ service, index }) {
           onClick={() => setIsOpen(!isOpen)}
           style={{
             width: "100%",
-            padding: "36px 0",
+            padding: isMobile ? "20px 0" : "36px 0",
             display: "flex",
-            alignItems: "center",
+            alignItems: isMobile ? "flex-start" : "center",
             justifyContent: "space-between",
             background: "none",
             border: "none",
             cursor: "pointer",
             textAlign: "left",
             color: "#ffffff",
+            gap: isMobile ? "12px" : "0",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
+          <div style={{
+            display: "flex",
+            alignItems: isMobile ? "flex-start" : "center",
+            gap: isMobile ? "16px" : isTablet ? "24px" : "40px",
+            minWidth: 0,
+            flex: 1,
+          }}>
             {/* Number */}
-            <span style={{ fontFamily: "monospace", fontSize: "12px", color: "rgba(255,255,255,0.2)", minWidth: "24px" }}>
-              {service.num}
-            </span>
+            {!isMobile && (
+              <span style={{ fontFamily: "monospace", fontSize: "12px", color: "rgba(255,255,255,0.2)", minWidth: "24px" }}>
+                {service.num}
+              </span>
+            )}
 
             {/* Icon */}
             <div
               style={{
-                width: "40px", height: "40px", borderRadius: "10px",
+                width: isMobile ? "36px" : "40px", height: isMobile ? "36px" : "40px", borderRadius: "10px",
                 background: isOpen ? "rgba(215,255,0,0.1)" : "rgba(255,255,255,0.04)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 color: isOpen ? "#D7FF00" : "rgba(255,255,255,0.4)",
                 transition: "all 0.3s ease", flexShrink: 0,
               }}
             >
-              <Icon size={18} />
+              <Icon size={isMobile ? 16 : 18} />
             </div>
 
             {/* Title + desc */}
-            <div>
+            <div style={{ minWidth: 0 }}>
               <h3
                 style={{
-                  fontSize: "clamp(18px, 2vw, 28px)",
+                  fontSize: isMobile ? "18px" : "clamp(18px, 2vw, 28px)",
                   fontWeight: "700",
                   color: isOpen ? "#D7FF00" : "#ffffff",
                   transition: "color 0.3s ease",
@@ -160,23 +189,34 @@ function ServiceCard({ service, index }) {
               >
                 {service.title}
               </h3>
-              <p style={{ fontSize: "14px", color: "#555555", maxWidth: "500px" }}>
-                {service.description}
-              </p>
+              {!isMobile && (
+                <p style={{ fontSize: "14px", color: "#555555", maxWidth: "500px" }}>
+                  {service.description}
+                </p>
+              )}
             </div>
           </div>
 
           {/* Right side */}
-          <div style={{ display: "flex", alignItems: "center", gap: "24px", flexShrink: 0 }}>
-            <span style={{ fontFamily: "monospace", fontSize: "13px", color: "#444444" }}>
-              {service.timeline}
-            </span>
+          <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "12px" : "24px", flexShrink: 0 }}>
+            {!isMobile && (
+              <span style={{ fontFamily: "monospace", fontSize: "13px", color: "#444444" }}>
+                {service.timeline}
+              </span>
+            )}
             {isOpen
               ? <ChevronUp size={18} color="rgba(255,255,255,0.4)" />
               : <ChevronDown size={18} color="rgba(255,255,255,0.4)" />
             }
           </div>
         </button>
+
+        {/* Mobile-only description shown above expandable when open or always */}
+        {isMobile && (
+          <p style={{ fontSize: "13px", color: "#555555", marginBottom: "12px", paddingRight: "8px" }}>
+            {service.description}
+          </p>
+        )}
 
         {/* Expandable Content */}
         <div
@@ -190,11 +230,11 @@ function ServiceCard({ service, index }) {
         >
           <div
             style={{
-              paddingBottom: "40px",
-              paddingLeft: "104px",
+              paddingBottom: isMobile ? "28px" : "40px",
+              paddingLeft: isMobile ? "0" : isTablet ? "64px" : "104px",
               display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-              gap: "40px",
+              gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "1fr 1fr 1fr",
+              gap: isMobile ? "28px" : "40px",
             }}
           >
             {/* Deliverables */}
@@ -230,15 +270,15 @@ function ServiceCard({ service, index }) {
             </div>
 
             {/* Timeline + CTA */}
-            <div>
+            <div style={{ gridColumn: isMobile ? "1 / -1" : isTablet ? "1 / -1" : "auto" }}>
               <p style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.3)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>
                 Timeline
               </p>
               <p style={{ fontSize: "24px", fontWeight: "800", color: "#ffffff", marginBottom: "24px" }}>
                 {service.timeline}
               </p>
-              
-               <a href="/contact"
+
+              <a href="/contact"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   padding: "12px 24px", background: "#D7FF00", color: "#050505",
@@ -262,6 +302,10 @@ function ServiceCard({ service, index }) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Services2() {
+  const bp = useBreakpoint();
+  const isMobile = bp === "mobile";
+  const isTablet = bp === "tablet";
+
   return (
     <div style={{ background: "#050505", minHeight: "100vh" }}>
 
@@ -270,7 +314,7 @@ export default function Services2() {
         style={{
           position: "relative",
           overflow: "hidden",
-          padding: "180px 60px 120px",
+          padding: isMobile ? "100px 24px 60px" : isTablet ? "140px 40px 80px" : "180px 60px 120px",
         }}
       >
         {/* Glow */}
@@ -290,7 +334,12 @@ export default function Services2() {
           </FadeIn>
 
           <FadeIn delay={100}>
-            <h1 style={{ fontWeight: "800", fontSize: "clamp(60px, 6vw, 100px)", lineHeight: "0.95", marginBottom: "24px" }}>
+            <h1 style={{
+              fontWeight: "800",
+              fontSize: isMobile ? "44px" : isTablet ? "64px" : "clamp(60px, 6vw, 100px)",
+              lineHeight: "0.95",
+              marginBottom: "24px",
+            }}>
               What I{" "}
               <span style={{ color: "#D7FF00", textShadow: "0 0 40px rgba(215,255,0,0.7)" }}>
                 offer
@@ -299,7 +348,13 @@ export default function Services2() {
           </FadeIn>
 
           <FadeIn delay={200}>
-            <p style={{ fontSize: "20px", color: "#777777", maxWidth: "520px", lineHeight: "1.7", fontWeight: "300" }}>
+            <p style={{
+              fontSize: isMobile ? "16px" : "20px",
+              color: "#777777",
+              maxWidth: "520px",
+              lineHeight: "1.7",
+              fontWeight: "300",
+            }}>
               End-to-end creative services designed for startups, brands, and businesses that demand excellence.
             </p>
           </FadeIn>
@@ -307,12 +362,12 @@ export default function Services2() {
       </section>
 
       {/* Divider */}
-      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "0 60px" }} />
+      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : "0 60px" }} />
 
       {/* Services List */}
-      <section style={{ padding: "40px 60px 120px" }}>
+      <section style={{ padding: isMobile ? "20px 24px 60px" : isTablet ? "30px 40px 80px" : "40px 60px 120px" }}>
         {services.map((service, i) => (
-          <ServiceCard key={service.num} service={service} index={i} />
+          <ServiceCard key={service.num} service={service} index={i} bp={bp} />
         ))}
       </section>
 

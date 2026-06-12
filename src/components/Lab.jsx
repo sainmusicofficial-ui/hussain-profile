@@ -3,6 +3,23 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
+// ─── Responsive Hook ───────────────────────────────────────────────────────────
+function useBreakpoint() {
+  const [bp, setBp] = useState("desktop");
+  useEffect(() => {
+    const check = () => {
+      const w = window.innerWidth;
+      if (w < 640) setBp("mobile");
+      else if (w <= 1024) setBp("tablet");
+      else setBp("desktop");
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return bp;
+}
+
 // ─── Scroll Fade Wrapper ──────────────────────────────────────────────────────
 function FadeIn({ children, delay = 0, direction = "up", once = true }) {
   const ref = useRef(null);
@@ -86,7 +103,7 @@ function TerminalExperiment() {
           initial={{ opacity: 0, x: -10 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: i * 0.15, duration: 0.4 }}
-          style={{ color: line.color }}
+          style={{ color: line.color, wordBreak: "break-word" }}
         >
           {line.prompt && <span style={{ color: "#00F0FF" }}>{line.prompt}</span>}
           {line.text}
@@ -106,6 +123,8 @@ function SpringPhysicsDemo() {
       <motion.button
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
+        onTapStart={() => setHovered(true)}
+        onTap={() => setHovered(false)}
         animate={{
           scale: hovered ? 1.1 : 1,
           backgroundColor: hovered ? "#D7FF00" : "#0a0a0a",
@@ -129,11 +148,11 @@ function SpringPhysicsDemo() {
 }
 
 // ─── Typography Showcase ──────────────────────────────────────────────────────
-function TypographyShowcase() {
+function TypographyShowcase({ isMobile }) {
   const types = [
-    { size: "56px", weight: "800", label: "Display" },
-    { size: "36px", weight: "700", label: "Heading" },
-    { size: "22px", weight: "600", label: "Subhead" },
+    { size: isMobile ? "40px" : "56px", weight: "800", label: "Display" },
+    { size: isMobile ? "28px" : "36px", weight: "700", label: "Heading" },
+    { size: isMobile ? "18px" : "22px", weight: "600", label: "Subhead" },
     { size: "16px", weight: "400", label: "Body" },
     { size: "13px", weight: "400", label: "Caption" },
   ];
@@ -311,7 +330,7 @@ function CodeSnippet() {
       <p style={{ fontFamily: "monospace", fontSize: "11px", color: "#D7FF00", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>
         Motion Config
       </p>
-      <pre style={{ fontFamily: "monospace", fontSize: "12px", lineHeight: "1.8", color: "rgba(255,255,255,0.5)", margin: 0 }}>
+      <pre style={{ fontFamily: "monospace", fontSize: "12px", lineHeight: "1.8", color: "rgba(255,255,255,0.5)", margin: 0, overflowX: "auto" }}>
 {`const spring = {
   type: "spring",
   stiffness: 400,
@@ -330,16 +349,17 @@ const fade = {
 }
 
 // ─── Interaction Playground ───────────────────────────────────────────────────
-function DraggableBall() {
+function DraggableBall({ isMobile }) {
+  const range = isMobile ? 40 : 80;
   return (
     <motion.div
       drag
-      dragConstraints={{ left: -80, right: 80, top: -80, bottom: 80 }}
+      dragConstraints={{ left: -range, right: range, top: -range, bottom: range }}
       dragElastic={0.3}
       whileDrag={{ scale: 1.2 }}
       whileHover={{ scale: 1.1 }}
       style={{
-        width: "64px", height: "64px", borderRadius: "50%",
+        width: isMobile ? "52px" : "64px", height: isMobile ? "52px" : "64px", borderRadius: "50%",
         background: "linear-gradient(135deg, #D7FF00, #00F0FF)",
         cursor: "grab", display: "flex", alignItems: "center",
         justifyContent: "center", fontSize: "20px",
@@ -351,7 +371,7 @@ function DraggableBall() {
   );
 }
 
-function MagneticButton({ children, color = "#D7FF00" }) {
+function MagneticButton({ children, color = "#D7FF00", isMobile }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 300, damping: 20 });
@@ -359,6 +379,7 @@ function MagneticButton({ children, color = "#D7FF00" }) {
   const ref = useRef(null);
 
   const handleMouseMove = (e) => {
+    if (isMobile) return;
     const rect = ref.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
@@ -385,7 +406,7 @@ function MagneticButton({ children, color = "#D7FF00" }) {
         cursor: "pointer", fontFamily: "inherit",
       }}
       whileHover={{ backgroundColor: color, color: "#050505", borderColor: color }}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.95, backgroundColor: color, color: "#050505", borderColor: color }}
       transition={{ duration: 0.2 }}
     >
       {children}
@@ -393,40 +414,42 @@ function MagneticButton({ children, color = "#D7FF00" }) {
   );
 }
 
-function InteractionPlayground() {
+function InteractionPlayground({ bp }) {
   const [count, setCount] = useState(0);
   const [tabs, setTabs] = useState(0);
   const tabLabels = ["Design", "Build", "Ship"];
+  const isMobile = bp === "mobile";
+  const isTablet = bp === "tablet";
 
   return (
-    <div style={{ padding: "60px 60px 120px" }}>
+    <div style={{ padding: isMobile ? "60px 24px 80px" : isTablet ? "60px 40px 100px" : "60px 60px 120px" }}>
       <FadeIn>
         <p style={{ fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "3px", fontSize: "13px", color: "#D7FF00", marginBottom: "16px" }}>
           // INTERACTION
         </p>
-        <h2 style={{ fontWeight: "800", fontSize: "clamp(36px, 3.5vw, 52px)", lineHeight: "1.05", color: "#ffffff", marginBottom: "60px" }}>
+        <h2 style={{ fontWeight: "800", fontSize: isMobile ? "32px" : "clamp(36px, 3.5vw, 52px)", lineHeight: "1.05", color: "#ffffff", marginBottom: isMobile ? "32px" : "60px" }}>
           Play with it
         </h2>
       </FadeIn>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(3, 1fr)", gap: "16px" }}>
 
         {/* Drag Demo */}
-        <Card delay={0} style={{ padding: "40px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "20px", minHeight: "220px" }}>
+        <Card delay={0} style={{ padding: isMobile ? "32px 24px" : "40px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "20px", minHeight: "220px" }}>
           <p style={{ fontFamily: "monospace", fontSize: "11px", color: "#555555" }}>Drag me around</p>
-          <DraggableBall />
-          <p style={{ fontFamily: "monospace", fontSize: "10px", color: "#333333" }}>drag · elastic · constrained</p>
+          <DraggableBall isMobile={isMobile} />
+          <p style={{ fontFamily: "monospace", fontSize: "10px", color: "#333333", textAlign: "center" }}>drag · elastic · constrained</p>
         </Card>
 
         {/* Magnetic Buttons */}
-        <Card delay={100} style={{ padding: "40px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "16px", minHeight: "220px" }}>
+        <Card delay={100} style={{ padding: isMobile ? "32px 24px" : "40px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "16px", minHeight: "220px" }}>
           <p style={{ fontFamily: "monospace", fontSize: "11px", color: "#555555", marginBottom: "8px" }}>Magnetic buttons</p>
-          <MagneticButton color="#D7FF00">Volt</MagneticButton>
-          <MagneticButton color="#00F0FF">Cyan</MagneticButton>
+          <MagneticButton color="#D7FF00" isMobile={isMobile}>Volt</MagneticButton>
+          <MagneticButton color="#00F0FF" isMobile={isMobile}>Cyan</MagneticButton>
         </Card>
 
         {/* Counter */}
-        <Card delay={200} style={{ padding: "40px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "20px", minHeight: "220px" }}>
+        <Card delay={200} style={{ padding: isMobile ? "32px 24px" : "40px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "20px", minHeight: "220px" }}>
           <p style={{ fontFamily: "monospace", fontSize: "11px", color: "#555555" }}>Animated counter</p>
           <AnimatePresence mode="popLayout">
             <motion.span
@@ -435,7 +458,7 @@ function InteractionPlayground() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.8 }}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              style={{ fontSize: "64px", fontWeight: "800", color: "#D7FF00", lineHeight: "1", display: "block" }}
+              style={{ fontSize: isMobile ? "48px" : "64px", fontWeight: "800", color: "#D7FF00", lineHeight: "1", display: "block" }}
             >
               {count}
             </motion.span>
@@ -455,16 +478,16 @@ function InteractionPlayground() {
         </Card>
 
         {/* Animated Tabs */}
-        <div style={{ gridColumn: "span 3" }}>
+        <div style={{ gridColumn: isMobile ? "1 / -1" : isTablet ? "1 / -1" : "span 3" }}>
           <Card delay={300}>
-            <div style={{ padding: "32px" }}>
+            <div style={{ padding: isMobile ? "24px" : "32px" }}>
               <p style={{ fontFamily: "monospace", fontSize: "11px", color: "#555555", marginBottom: "20px" }}>Animated tabs</p>
-              <div style={{ display: "flex", gap: "4px", background: "rgba(255,255,255,0.03)", padding: "4px", borderRadius: "100px", width: "fit-content", marginBottom: "24px" }}>
+              <div style={{ display: "flex", gap: "4px", background: "rgba(255,255,255,0.03)", padding: "4px", borderRadius: "100px", width: isMobile ? "100%" : "fit-content", marginBottom: "24px", overflowX: "auto" }}>
                 {tabLabels.map((tab, i) => (
                   <button
                     key={tab}
                     onClick={() => setTabs(i)}
-                    style={{ position: "relative", padding: "8px 24px", borderRadius: "100px", border: "none", background: "transparent", color: tabs === i ? "#050505" : "#555555", fontSize: "13px", fontWeight: "600", cursor: "pointer", zIndex: 1, transition: "color 0.2s ease" }}
+                    style={{ position: "relative", padding: isMobile ? "8px 16px" : "8px 24px", borderRadius: "100px", border: "none", background: "transparent", color: tabs === i ? "#050505" : "#555555", fontSize: "13px", fontWeight: "600", cursor: "pointer", zIndex: 1, transition: "color 0.2s ease", flex: isMobile ? 1 : "none", whiteSpace: "nowrap" }}
                   >
                     {tabs === i && (
                       <motion.div
@@ -484,7 +507,7 @@ function InteractionPlayground() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  style={{ fontSize: "15px", color: "#666666", lineHeight: "1.7" }}
+                  style={{ fontSize: isMobile ? "14px" : "15px", color: "#666666", lineHeight: "1.7" }}
                 >
                   {tabs === 0 && "Every project starts with a deep understanding of the brand, audience, and goals — strategy before aesthetics."}
                   {tabs === 1 && "From wireframes to high-fidelity UI, built with modern tools, real design systems, and pixel-perfect execution."}
@@ -501,8 +524,10 @@ function InteractionPlayground() {
 }
 
 // ─── Creative Playground ──────────────────────────────────────────────────────
-function CreativePlayground() {
+function CreativePlayground({ bp }) {
   const [logo, setLogo] = useState("HK.");
+  const isMobile = bp === "mobile";
+  const isTablet = bp === "tablet";
 
   const logos = ["HK.", "HK_", "HK//", "H.K", "HK°", "HK+"];
 
@@ -526,22 +551,22 @@ function CreativePlayground() {
   };
 
   return (
-    <div style={{ padding: "100px 60px" }}>
+    <div style={{ padding: isMobile ? "60px 24px" : isTablet ? "80px 40px" : "100px 60px" }}>
 
       <FadeIn>
         <p style={{ fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "3px", fontSize: "13px", color: "#D7FF00", marginBottom: "16px" }}>
           // CREATIVE PLAYGROUND
         </p>
-        <h2 style={{ fontWeight: "800", fontSize: "clamp(36px,4vw,60px)", color: "#ffffff", marginBottom: "60px" }}>
+        <h2 style={{ fontWeight: "800", fontSize: isMobile ? "32px" : "clamp(36px,4vw,60px)", color: "#ffffff", marginBottom: isMobile ? "32px" : "60px" }}>
           Play with ideas.
         </h2>
       </FadeIn>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "16px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile || isTablet ? "1fr" : "repeat(2,1fr)", gap: "16px" }}>
 
         {/* LOGO SHUFFLE */}
         <Card>
-          <div style={{ padding: "50px", textAlign: "center" }}>
+          <div style={{ padding: isMobile ? "32px 24px" : "50px", textAlign: "center" }}>
             <p style={{ color: "#666", marginBottom: "20px", fontSize: "12px" }}>
               Logo Generator
             </p>
@@ -550,7 +575,7 @@ function CreativePlayground() {
               key={logo}
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: 1, scale: 1 }}
-              style={{ fontSize: "80px", fontWeight: "800", color: "#D7FF00" }}
+              style={{ fontSize: isMobile ? "56px" : "80px", fontWeight: "800", color: "#D7FF00" }}
             >
               {logo}
             </motion.div>
@@ -575,12 +600,12 @@ function CreativePlayground() {
 
         {/* DESIGN BRIEF */}
         <Card>
-          <div style={{ padding: "50px" }}>
+          <div style={{ padding: isMobile ? "32px 24px" : "50px" }}>
             <p style={{ color: "#666", marginBottom: "20px", fontSize: "12px" }}>
               Design Challenge
             </p>
 
-            <h3 style={{ color: "#fff", fontSize: "28px", lineHeight: "1.4", marginBottom: "30px" }}>
+            <h3 style={{ color: "#fff", fontSize: isMobile ? "20px" : "28px", lineHeight: "1.4", marginBottom: "30px" }}>
               {prompt}
             </h3>
 
@@ -606,9 +631,11 @@ function CreativePlayground() {
 }
 
 // ─── Mood Mixer ────────────────────────────────────────────────────────────────
-function MoodMixer() {
+function MoodMixer({ bp }) {
   const [chaos, setChaos] = useState(50);
   const [energy, setEnergy] = useState(50);
+  const isMobile = bp === "mobile";
+  const isTablet = bp === "tablet";
 
   const moodNames = {
     lowlow: "Quiet Static",
@@ -626,20 +653,20 @@ function MoodMixer() {
   const speed = Math.max(1.5, 6 - energy / 20);
 
   return (
-    <div style={{ padding: "100px 60px" }}>
+    <div style={{ padding: isMobile ? "60px 24px" : isTablet ? "80px 40px" : "100px 60px" }}>
       <FadeIn>
         <p style={{ fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "3px", fontSize: "13px", color: "#00F0FF", marginBottom: "16px" }}>
           // MOOD MIXER
         </p>
-        <h2 style={{ fontWeight: "800", fontSize: "clamp(36px, 4vw, 60px)", color: "#ffffff", marginBottom: "60px" }}>
+        <h2 style={{ fontWeight: "800", fontSize: isMobile ? "32px" : "clamp(36px, 4vw, 60px)", color: "#ffffff", marginBottom: isMobile ? "32px" : "60px" }}>
           Mix a mood.
         </h2>
       </FadeIn>
 
       <Card glow="cyan">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "360px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", minHeight: isMobile ? "auto" : "360px" }}>
           {/* Blob preview */}
-          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", minHeight: isMobile ? "260px" : "auto" }}>
             <motion.div
               animate={{
                 background: `radial-gradient(circle at 50% 50%, hsl(${hue1}, 100%, 60%), hsl(${hue2}, 100%, 55%))`,
@@ -652,8 +679,8 @@ function MoodMixer() {
                 rotate: { duration: speed * 6, repeat: Infinity, ease: "linear" },
               }}
               style={{
-                width: "220px",
-                height: "220px",
+                width: isMobile ? "160px" : "220px",
+                height: isMobile ? "160px" : "220px",
                 borderRadius: "42% 58% 65% 35% / 45% 40% 60% 55%",
                 filter: `blur(${blur * 0.3}px)`,
                 boxShadow: `0 0 ${blur}px hsla(${hue1},100%,60%,0.35)`,
@@ -679,6 +706,7 @@ function MoodMixer() {
                   padding: "8px 18px",
                   borderRadius: "100px",
                   border: "1px solid rgba(255,255,255,0.08)",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {moodNames[moodKey]}
@@ -687,7 +715,7 @@ function MoodMixer() {
           </div>
 
           {/* Controls */}
-          <div style={{ padding: "48px", display: "flex", flexDirection: "column", justifyContent: "center", gap: "40px", borderLeft: "1px solid rgba(255,255,255,0.05)" }}>
+          <div style={{ padding: isMobile ? "32px 24px" : "48px", display: "flex", flexDirection: "column", justifyContent: "center", gap: isMobile ? "28px" : "40px", borderLeft: isMobile ? "none" : "1px solid rgba(255,255,255,0.05)", borderTop: isMobile ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", fontFamily: "monospace", fontSize: "11px", color: "#555555" }}>
                 <span>CHAOS</span>
@@ -731,11 +759,15 @@ function MoodMixer() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Lab() {
+  const bp = useBreakpoint();
+  const isMobile = bp === "mobile";
+  const isTablet = bp === "tablet";
+
   return (
     <div style={{ background: "#050505", minHeight: "100vh" }}>
 
       {/* Hero */}
-      <section style={{ position: "relative", overflow: "hidden", padding: "180px 60px 120px" }}>
+      <section style={{ position: "relative", overflow: "hidden", padding: isMobile ? "100px 24px 60px" : isTablet ? "140px 40px 80px" : "180px 60px 120px" }}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -755,7 +787,7 @@ export default function Lab() {
             </p>
           </FadeIn>
           <FadeIn delay={100}>
-            <h1 style={{ fontWeight: "800", fontSize: "clamp(60px, 6vw, 100px)", lineHeight: "0.95", marginBottom: "24px" }}>
+            <h1 style={{ fontWeight: "800", fontSize: isMobile ? "44px" : isTablet ? "64px" : "clamp(60px, 6vw, 100px)", lineHeight: "0.95", marginBottom: "24px" }}>
               Creative{" "}
               <motion.span
                 animate={{ textShadow: ["0 0 20px rgba(0,240,255,0.4)", "0 0 60px rgba(0,240,255,0.8)", "0 0 20px rgba(0,240,255,0.4)"] }}
@@ -767,7 +799,7 @@ export default function Lab() {
             </h1>
           </FadeIn>
           <FadeIn delay={200}>
-            <p style={{ fontSize: "20px", color: "#777777", maxWidth: "520px", lineHeight: "1.7", fontWeight: "300" }}>
+            <p style={{ fontSize: isMobile ? "16px" : "20px", color: "#777777", maxWidth: "520px", lineHeight: "1.7", fontWeight: "300" }}>
               Experiments in motion, typography, interaction, and design systems.
               This is where ideas are tested and boundaries are pushed.
             </p>
@@ -776,13 +808,13 @@ export default function Lab() {
       </section>
 
       {/* Divider */}
-      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "0 60px" }} />
+      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : "0 60px" }} />
 
       {/* Bento Grid */}
-      <section style={{ padding: "60px 60px 40px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+      <section style={{ padding: isMobile ? "40px 24px 20px" : isTablet ? "50px 40px 20px" : "60px 60px 40px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(3, 1fr)", gap: "16px" }}>
 
-          <div style={{ gridColumn: "span 2" }}>
+          <div style={{ gridColumn: isMobile ? "1 / -1" : isTablet ? "1 / -1" : "span 2" }}>
             <Card delay={0} glow="cyan">
               <TerminalExperiment />
             </Card>
@@ -793,7 +825,7 @@ export default function Lab() {
           </Card>
 
           <Card delay={150}>
-            <TypographyShowcase />
+            <TypographyShowcase isMobile={isMobile} />
           </Card>
 
           <Card delay={200}>
@@ -804,7 +836,7 @@ export default function Lab() {
             <HoverRevealCards />
           </Card>
 
-          <div style={{ gridColumn: "span 2" }}>
+          <div style={{ gridColumn: isMobile ? "1 / -1" : isTablet ? "1 / -1" : "span 2" }}>
             <Card delay={300}>
               <ComponentPreview />
             </Card>
@@ -818,14 +850,14 @@ export default function Lab() {
       </section>
 
       {/* Divider */}
-      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "0 60px" }} />
+      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : "0 60px" }} />
 
       {/* Interaction Playground */}
-      <InteractionPlayground />
+      <InteractionPlayground bp={bp} />
 
-      <CreativePlayground />
+      <CreativePlayground bp={bp} />
 
-      <MoodMixer />
+      <MoodMixer bp={bp} />
 
     </div>
   );
