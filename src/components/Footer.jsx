@@ -185,7 +185,7 @@ export default function Footer() {
                 </p>
 
                 <a
-                  href="mailto:hello@hussainkhan.design"
+                  href="mailto:hello@hussainkhan.co.in"
                   style={{
                     color: "#B8B8B8", textDecoration: "none",
                     display: "block", marginBottom: "16px",
@@ -195,7 +195,7 @@ export default function Footer() {
                   onMouseEnter={(e) => e.currentTarget.style.color = "#D7FF00"}
                   onMouseLeave={(e) => e.currentTarget.style.color = "#B8B8B8"}
                 >
-                  hello@hussainkhan.design
+                  hello@hussainkhan.co.in
                 </a>
 
                 <p style={{

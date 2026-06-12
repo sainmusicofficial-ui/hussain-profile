@@ -363,7 +363,7 @@ export default function Contact() {
                 </span>
               </div>
               <p style={{ fontSize: "14px", color: COLORS.subtext, lineHeight: "1.7", margin: 0 }}>
-                Currently accepting new clients for Q1 2025. Typical response
+                Currently accepting new clients for Q3 2026. Typical response
                 time is within 24 hours.
               </p>
             </motion.div>
