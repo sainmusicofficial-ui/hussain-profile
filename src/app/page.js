@@ -10,6 +10,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import CursorGlow from "@/components/CursorGlow";
+import Preloader from "@/components/Preloader";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       className="bg-[#050505] min-h-screen"
       style={{ overflowX: "hidden" }}
     >
+      <Preloader />
       <CursorGlow />
       <Navbar />
 
