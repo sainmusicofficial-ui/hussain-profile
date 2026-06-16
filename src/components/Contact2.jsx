@@ -14,8 +14,8 @@ const COLORS = {
 
 const socials = [
   { label: "Dribbble", url: "#" },
-  { label: "Behance", url: "#" },
-  { label: "LinkedIn", url: "#" },
+  { label: "Behance", url: "https://www.behance.net/hussainkhan018" },
+  { label: "LinkedIn", url: "https://www.linkedin.com/in/hussain-khan-667b1b227/" },
   { label: "Twitter / X", url: "#" },
   { label: "Instagram", url: "#" },
 ];
@@ -73,14 +73,8 @@ function StyledInput(props) {
   return (
     <input
       {...props}
-      onFocus={(e) => {
-        setFocused(true);
-        props.onFocus?.(e);
-      }}
-      onBlur={(e) => {
-        setFocused(false);
-        props.onBlur?.(e);
-      }}
+      onFocus={(e) => { setFocused(true); props.onFocus?.(e); }}
+      onBlur={(e) => { setFocused(false); props.onBlur?.(e); }}
       style={{
         ...inputStyle,
         borderColor: focused ? "rgba(215,255,0,0.5)" : "rgba(255,255,255,0.05)",
@@ -95,14 +89,8 @@ function StyledTextarea(props) {
   return (
     <textarea
       {...props}
-      onFocus={(e) => {
-        setFocused(true);
-        props.onFocus?.(e);
-      }}
-      onBlur={(e) => {
-        setFocused(false);
-        props.onBlur?.(e);
-      }}
+      onFocus={(e) => { setFocused(true); props.onFocus?.(e); }}
+      onBlur={(e) => { setFocused(false); props.onBlur?.(e); }}
       style={{
         ...inputStyle,
         height: "auto",
@@ -127,15 +115,35 @@ export default function Contact() {
   });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrMsg("");
     setSending(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setForm({ name: "", email: "", project: "", budget: "", message: "" });
-    setSending(false);
-    setSent(true);
-    setTimeout(() => setSent(false), 2000);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          projectType: form.project,
+          budget: form.budget,
+          message: form.message,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      setForm({ name: "", email: "", project: "", budget: "", message: "" });
+      setSent(true);
+      setTimeout(() => setSent(false), 3000);
+    } catch (err) {
+      setErrMsg(err.message || "Failed to send. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -269,6 +277,16 @@ export default function Contact() {
                 />
               </FormField>
 
+              {/* Error */}
+              {errMsg && (
+                <p style={{
+                  color: "#ff4444", fontSize: "12px", margin: 0,
+                  fontFamily: "monospace", letterSpacing: "0.05em",
+                }}>
+                  ⚠ {errMsg}
+                </p>
+              )}
+
               <motion.div
                 custom={5}
                 variants={fieldVariants}
@@ -298,22 +316,17 @@ export default function Contact() {
                 >
                   {sending ? (
                     <>
-                      <span
-                        style={{
-                          width: "16px", height: "16px", borderRadius: "50%",
-                          border: "2px solid rgba(5,5,5,0.3)",
-                          borderTopColor: COLORS.void,
-                          display: "inline-block",
-                          animation: "contact-spin 0.8s linear infinite",
-                        }}
-                      />
+                      <span style={{
+                        width: "16px", height: "16px", borderRadius: "50%",
+                        border: "2px solid rgba(5,5,5,0.3)",
+                        borderTopColor: COLORS.void,
+                        display: "inline-block",
+                        animation: "contact-spin 0.8s linear infinite",
+                      }} />
                       Sending...
                     </>
                   ) : sent ? (
-                    <motion.span
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                    >
+                    <motion.span initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
                       Sent ✓
                     </motion.span>
                   ) : (
@@ -363,8 +376,7 @@ export default function Contact() {
                 </span>
               </div>
               <p style={{ fontSize: "14px", color: COLORS.subtext, lineHeight: "1.7", margin: 0 }}>
-                Currently accepting new clients for Q3 2026. Typical response
-                time is within 24 hours.
+                Currently accepting new clients for Q3 2026. Typical response time is within 24 hours.
               </p>
             </motion.div>
 
@@ -375,10 +387,7 @@ export default function Contact() {
                   icon: <Mail size={16} color={COLORS.volt} />,
                   label: "Email",
                   value: (
-                    <a
-                      href="mailto:hello@hussainkhan.co.in"
-                      style={{ fontSize: "14px", color: COLORS.content, textDecoration: "none" }}
-                    >
+                    <a href="mailto:hello@hussainkhan.co.in" style={{ fontSize: "14px", color: COLORS.content, textDecoration: "none" }}>
                       hello@hussainkhan.co.in
                     </a>
                   ),
@@ -472,40 +481,18 @@ export default function Contact() {
         @keyframes contact-spin {
           to { transform: rotate(360deg); }
         }
-
         @media (max-width: 900px) {
-          .contact-grid {
-            grid-template-columns: 1fr !important;
-            gap: 56px !important;
-          }
-          .contact-hero {
-            padding: 56px 32px 80px !important;
-          }
-          .contact-section {
-            padding: 48px 32px 96px !important;
-          }
-          .contact-divider {
-            margin: 0 32px !important;
-          }
+          .contact-grid { grid-template-columns: 1fr !important; gap: 56px !important; }
+          .contact-hero { padding: 56px 32px 80px !important; }
+          .contact-section { padding: 48px 32px 96px !important; }
+          .contact-divider { margin: 0 32px !important; }
         }
-
         @media (max-width: 640px) {
-          .contact-hero {
-            padding: 40px 20px 56px !important;
-          }
-          .contact-section {
-            padding: 32px 20px 72px !important;
-          }
-          .contact-form-row {
-            grid-template-columns: 1fr !important;
-            gap: 20px !important;
-          }
-          .contact-grid {
-            gap: 48px !important;
-          }
-          .contact-divider {
-            margin: 0 20px !important;
-          }
+          .contact-hero { padding: 40px 20px 56px !important; }
+          .contact-section { padding: 32px 20px 72px !important; }
+          .contact-form-row { grid-template-columns: 1fr !important; gap: 20px !important; }
+          .contact-grid { gap: 48px !important; }
+          .contact-divider { margin: 0 20px !important; }
         }
       `}</style>
     </div>

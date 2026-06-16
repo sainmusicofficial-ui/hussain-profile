@@ -53,8 +53,8 @@ const footerLinks = [
 
 const socials = [
   { name: "Instagram", href: "https://instagram.com" },
-  { name: "LinkedIn", href: "https://linkedin.com" },
-  { name: "Behance", href: "https://behance.net" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/hussain-khan-667b1b227/" },
+  { name: "Behance", href: "https://www.behance.net/hussainkhan018" },
   { name: "Dribbble", href: "https://dribbble.com" },
 ];
 

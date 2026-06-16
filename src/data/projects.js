@@ -18,7 +18,7 @@ export const featuredProjects = [
       "Company Profile",
     ],
     accent: "lime",
-    image: "/projects/ruyadar.png",
+    image: "/projects/ruyadars.png",
   },
 
   {
@@ -27,7 +27,7 @@ export const featuredProjects = [
     category: "Restaurant Branding",
     services: ["Website Design"],
     accent: "cyan",
-    image: "/projects/brisket.png",
+    image: "/projects/briskets.png",
   },
 
   {
