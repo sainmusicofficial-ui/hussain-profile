@@ -26,8 +26,51 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Hussain Khan",
-  description: "Creative Designer & Brand Strategist",
+  metadataBase: new URL("https://hussainkhan.co.in"),
+
+  title: {
+    default: "Hussain Khan | Brand Designer & UI/UX Designer",
+    template: "%s | Hussain Khan",
+  },
+
+  description:
+    "Creative Designer & Brand Strategist helping startups and businesses build memorable brands, websites, and digital experiences.",
+
+  keywords: [
+    "Hussain Khan",
+    "Brand Designer",
+    "UI UX Designer",
+    "Web Designer",
+    "Product Designer",
+    "Brand Strategist",
+    "Freelance Designer",
+    "Portfolio",
+    "Bangalore Designer",
+  ],
+
+  authors: [{ name: "Hussain Khan" }],
+
+  openGraph: {
+    title: "Hussain Khan | Brand Designer & UI/UX Designer",
+    description:
+      "Helping startups and businesses build memorable brands, websites, and digital experiences.",
+    url: "https://hussainkhan.co.in",
+    siteName: "Hussain Khan",
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Hussain Khan",
+    description:
+      "Creative Designer & Brand Strategist helping startups build memorable brands and products.",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {
