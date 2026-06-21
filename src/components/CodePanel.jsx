@@ -1,32 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function CodePanel() {
   const tabs = ["brand.config.js", "website.tsx", "ui-system.ts"];
 
   const codeContent = [
-    {
-      name: "Premium",
-      strategy: "defineVision()",
-      design: "craftExperience()",
-      impact: "measureSuccess()",
-    },
-    {
-      name: "Portfolio",
-      strategy: "buildWebsite()",
-      design: "createUI()",
-      impact: "generateLeads()",
-    },
-    {
-      name: "Design System",
-      strategy: "scaleGrowth()",
-      design: "buildComponents()",
-      impact: "improveUX()",
-    },
+    { name: "Premium", strategy: "defineVision()", design: "craftExperience()", impact: "measureSuccess()" },
+    { name: "Portfolio", strategy: "buildWebsite()", design: "createUI()", impact: "generateLeads()" },
+    { name: "Design System", strategy: "scaleGrowth()", design: "buildComponents()", impact: "improveUX()" },
   ];
 
   const [activeTab, setActiveTab] = useState(0);
   const [isSmall, setIsSmall] = useState(false);
+  const cardRef = useRef(null);
+  const rafRef = useRef(null);
+
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+  const [glow, setGlow] = useState({ x: 50, y: 50 });
+  const [hovering, setHovering] = useState(false);
 
   useEffect(() => {
     const check = () => setIsSmall(window.innerWidth < 1024);
@@ -42,15 +33,54 @@ export default function CodePanel() {
     return () => clearInterval(interval);
   }, []);
 
-  // Hide completely on mobile & tablet
+  function handleMouseMove(e) {
+    const card = cardRef.current;
+    if (!card) return;
+
+    // Throttle with requestAnimationFrame to avoid janky/overlapping updates
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+
+      const clampedPx = Math.min(Math.max(px, 0), 1);
+      const clampedPy = Math.min(Math.max(py, 0), 1);
+
+      const maxTilt = 7; // reduced for a calmer, less glitchy feel
+      const ry = (clampedPx - 0.5) * maxTilt * 2;
+      const rx = (0.5 - clampedPy) * maxTilt * 2;
+
+      setTilt({ rx, ry });
+      setGlow({ x: clampedPx * 100, y: clampedPy * 100 });
+    });
+  }
+
+  function handleMouseEnter() {
+    setHovering(true);
+  }
+
+  function handleMouseLeave() {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    setHovering(false);
+    setTilt({ rx: 0, ry: 0 });
+  }
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
   if (isSmall) return null;
 
   return (
     <>
       <style>{`
         @keyframes floatPanel {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
+          0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+          50% { transform: translateY(-10px) rotateX(0deg) rotateY(0deg); }
         }
         @keyframes blink {
           0%, 100% { opacity: 1; }
@@ -59,9 +89,18 @@ export default function CodePanel() {
         .cursor-blink {
           animation: blink 1s step-end infinite;
         }
+        .codepanel-tilt-wrap {
+          perspective: 1400px;
+          perspective-origin: 50% 50%;
+        }
+        .codepanel-card {
+          transform-style: preserve-3d;
+          will-change: transform;
+        }
       `}</style>
 
-      <div style={{ position: "relative" }}>
+      {/* Perspective lives on a stable, non-positioned wrapper */}
+      <div className="codepanel-tilt-wrap" style={{ position: "relative" }}>
 
         {/* Glow */}
         <div
@@ -75,8 +114,13 @@ export default function CodePanel() {
           }}
         />
 
-        {/* Card */}
+        {/* Card — 3D tilt container */}
         <div
+          ref={cardRef}
+          className="codepanel-card"
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           style={{
             position: "relative",
             width: "500px",
@@ -85,17 +129,37 @@ export default function CodePanel() {
             background: "rgba(8,8,8,0.95)",
             backdropFilter: "blur(20px)",
             overflow: "hidden",
-            boxShadow: "0 0 40px rgba(0,0,0,0.4)",
-            animation: "floatPanel 3s ease-in-out infinite",
+            boxShadow: hovering
+              ? "0 30px 60px rgba(0,0,0,0.55), 0 0 50px rgba(0,240,255,0.12)"
+              : "0 0 40px rgba(0,0,0,0.4)",
+            transform: hovering
+              ? `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale3d(1.015,1.015,1.015)`
+              : "rotateX(0deg) rotateY(0deg) scale3d(1,1,1)",
+            transition: hovering
+              ? "transform 0.15s ease-out, box-shadow 0.3s ease"
+              : "transform 0.5s ease-out, box-shadow 0.4s ease",
+            animation: hovering ? "none" : "floatPanel 3s ease-in-out infinite",
           }}
-          onMouseEnter={(e) => e.currentTarget.style.animationPlayState = "paused"}
-          onMouseLeave={(e) => e.currentTarget.style.animationPlayState = "running"}
         >
+          {/* Sheen / glare layer that follows cursor */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              opacity: hovering ? 1 : 0,
+              transition: "opacity 0.3s ease",
+              background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(215,255,0,0.10), transparent 45%)`,
+              zIndex: 2,
+            }}
+          />
+
           {/* Header */}
           <div
             style={{
               display: "flex", alignItems: "center", gap: "8px",
               padding: "14px 20px", borderBottom: "1px solid #161616",
+              position: "relative", zIndex: 1,
             }}
           >
             <span style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#ef4444" }} />
@@ -107,7 +171,7 @@ export default function CodePanel() {
           </div>
 
           {/* Code Body */}
-          <div style={{ padding: "40px", fontFamily: "monospace", fontSize: "15px", lineHeight: "2.2" }}>
+          <div style={{ padding: "40px", fontFamily: "monospace", fontSize: "15px", lineHeight: "2.2", position: "relative", zIndex: 1 }}>
             <div>
               <span style={{ color: "#00F0FF" }}>const</span>{" "}
               <span style={{ color: "#ffffff" }}>brand</span>{" "}

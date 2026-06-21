@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-// ─── Scroll Animation ─────────────────────────────────────────────────────────
 function useFadeIn() {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -42,7 +41,6 @@ function FadeIn({ children, delay = 0, direction = "up" }) {
   );
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
 const footerLinks = [
   { name: "Work", href: "/work" },
   { name: "About", href: "/about" },
@@ -58,7 +56,12 @@ const socials = [
   { name: "Dribbble", href: "https://dribbble.com" },
 ];
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+const legalLinks = [
+  { name: "Privacy Policy", href: "/privacy-policy" },
+  { name: "Terms of Service", href: "/terms-of-service" },
+  { name: "Cookie Policy", href: "/cookie-policy" },
+];
+
 export default function Footer() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -82,7 +85,6 @@ export default function Footer() {
         padding: isMobile ? "60px 24px 32px" : isTablet ? "80px 40px 32px" : "100px 60px 40px",
       }}
     >
-      {/* Top Grid */}
       <FadeIn delay={0}>
         <div
           style={{
@@ -93,7 +95,6 @@ export default function Footer() {
           }}
         >
 
-          {/* Navigation */}
           <FadeIn delay={0} direction="up">
             <div>
               <p style={{
@@ -130,7 +131,6 @@ export default function Footer() {
             </div>
           </FadeIn>
 
-          {/* Connect */}
           <FadeIn delay={100} direction="up">
             <div>
               <p style={{
@@ -171,7 +171,6 @@ export default function Footer() {
             </div>
           </FadeIn>
 
-          {/* Get In Touch */}
           <div style={{ gridColumn: isMobile ? "1 / -1" : "auto" }}>
             <FadeIn delay={200} direction="up">
               <div>
@@ -225,7 +224,6 @@ export default function Footer() {
         </div>
       </FadeIn>
 
-      {/* Bottom Bar */}
       <FadeIn delay={300}>
         <div
           style={{
@@ -235,12 +233,45 @@ export default function Footer() {
             flexDirection: isMobile ? "column" : "row",
             justifyContent: "space-between",
             alignItems: isMobile ? "flex-start" : "center",
-            gap: isMobile ? "8px" : "0",
+            gap: isMobile ? "20px" : "0",
           }}
         >
           <p style={{ fontFamily: "var(--font-geist-mono)", color: "#6B6B6B", fontSize: "12px" }}>
             © 2026 Hussain Khan. All rights reserved.
           </p>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: isMobile ? "12px" : "20px",
+              order: isMobile ? 3 : 0,
+            }}
+          >
+            {legalLinks.map((item, i) => (
+              <span key={item.name} style={{ display: "flex", alignItems: "center", gap: isMobile ? "12px" : "20px" }}>
+                <Link
+                  href={item.href}
+                  style={{
+                    fontFamily: "var(--font-geist-mono)",
+                    color: "#6B6B6B",
+                    fontSize: "12px",
+                    textDecoration: "none",
+                    transition: "color 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#D7FF00")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#6B6B6B")}
+                >
+                  {item.name}
+                </Link>
+                {!isMobile && i < legalLinks.length - 1 && (
+                  <span style={{ color: "#333333", fontSize: "12px" }}>·</span>
+                )}
+              </span>
+            ))}
+          </div>
+
           <p style={{ fontFamily: "var(--font-geist-mono)", color: "#6B6B6B", fontSize: "12px" }}>
             Designed & Developed by Hussain Khan
           </p>

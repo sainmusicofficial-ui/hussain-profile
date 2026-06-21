@@ -10,7 +10,7 @@ export const featuredProjects = [
 
   {
     title: "Ruyadar Projects",
-    slug: "ruyadar-projects",
+    slug: "ruyadar",
     category: "Construction & Real Estate",
     services: [
       "Logo Design",
@@ -23,7 +23,7 @@ export const featuredProjects = [
 
   {
     title: "Brisket & Chops",
-    slug: "brisket-chops",
+    slug: "brisket-and-chops",
     category: "Restaurant Branding",
     services: ["Website Design"],
     accent: "cyan",

@@ -7,6 +7,9 @@ import {
 import "./globals.css";
 
 import CursorGlow from "@/components/CursorGlow";
+import SmoothScroll from "@/components/SmoothScroll";
+import CustomCursor from "@/components/CustomCursor";
+import JsonLd from "@/components/JsonLd";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -27,6 +30,10 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   metadataBase: new URL("https://hussainkhan.co.in"),
+
+  alternates: {
+  canonical: "https://www.hussainkhan.co.in",
+},
 
   title: {
     default: "Hussain Khan | Brand Designer & UI/UX Designer",
@@ -77,11 +84,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-  className={`${jakarta.variable} ${jetbrains.variable} ${geistMono.variable}`}
->
-  {children}
-  <CursorGlow />
-</body>
+        className={`${jakarta.variable} ${jetbrains.variable} ${geistMono.variable}`}
+      >
+        <JsonLd />
+        <SmoothScroll>
+          {children}
+          <CursorGlow />
+          <CustomCursor />
+        </SmoothScroll>
+      </body>
     </html>
   );
 }
