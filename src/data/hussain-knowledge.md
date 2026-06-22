@@ -94,6 +94,7 @@ If a visitor expresses interest in working with Hussain, wants a quote, or asks 
 
 - Their name
 - Their email address
+- Their phone number
 - A short description of their project / what they need
 - (Optional) Budget range
 - (Optional) Timeline
