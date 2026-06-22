@@ -10,6 +10,7 @@ import CursorGlow from "@/components/CursorGlow";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import JsonLd from "@/components/JsonLd";
+import AskHussainChat from "@/components/AskHussainChat";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -91,6 +92,7 @@ export default function RootLayout({ children }) {
           {children}
           <CursorGlow />
           <CustomCursor />
+          <AskHussainChat />
         </SmoothScroll>
       </body>
     </html>
