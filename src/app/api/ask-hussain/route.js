@@ -59,12 +59,13 @@ async function sendLeadEmail(lead) {
 
   try {
     await resend.emails.send({
-      from: "Ask Hussain AI <noreply@hussainkhan.co.in>", // must match your verified Resend domain
+      from: "Ask Hussain AI <hello@hussainkhan.co.in>",
       to: "hello@hussainkhan.co.in",
       subject: `New lead from Ask Hussain AI — ${lead.name || "Unknown"}`,
       html: `
         <h2>New lead captured by Ask Hussain AI</h2>
         <p><strong>Name:</strong> ${lead.name || "—"}</p>
+        <p><strong>Phone:</strong> ${lead.phone || "—"}</p>
         <p><strong>Email:</strong> ${lead.email || "—"}</p>
         <p><strong>Project:</strong> ${lead.project || "—"}</p>
         <p><strong>Budget:</strong> ${lead.budget || "—"}</p>
