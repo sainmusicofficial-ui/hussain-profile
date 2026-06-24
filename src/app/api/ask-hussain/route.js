@@ -55,7 +55,7 @@ function extractLead(rawText) {
 }
 
 async function sendLeadEmail(lead) {
-  if (!lead || !lead.email) return;
+  if (!lead || (!lead.email && !lead.phone)) return;
 
   try {
     await resend.emails.send({
@@ -138,7 +138,7 @@ export async function POST(req) {
     const { cleanText, lead } = extractLead(rawReply);
 
     // Fire-and-forget the lead email (don't block the chat response on it)
-    if (lead && lead.email) {
+    if (lead && (lead.email || lead.phone)) {
       sendLeadEmail(lead);
     }
 
