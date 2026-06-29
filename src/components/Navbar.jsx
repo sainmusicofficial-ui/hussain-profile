@@ -93,7 +93,7 @@ export default function Navbar() {
         backdropFilter: "blur(20px)",
         backgroundColor: "rgba(0,0,0,0.4)",
       }}>
-        <div style={{ padding: isMobile ? "16px 24px" : "16px 60px" }}>
+        <div style={{ padding: isMobile ? "16px 20px" : "16px clamp(24px, 4vw, 60px)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
             <Link href="/" style={{
@@ -107,10 +107,10 @@ export default function Navbar() {
             </Link>
 
             {!isMobile && (
-              <div style={{ display: "flex", alignItems: "center", gap: "80px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "clamp(28px, 4vw, 80px)" }}>
                 <nav>
                   <ul style={{
-                    display: "flex", alignItems: "center", gap: "46px",
+                    display: "flex", alignItems: "center", gap: "clamp(20px, 3vw, 46px)",
                     fontSize: "16px", color: "#686868", letterSpacing: "0.08em",
                     listStyle: "none", margin: 0, padding: 0,
                     fontFamily: "var(--font-geist-mono)",

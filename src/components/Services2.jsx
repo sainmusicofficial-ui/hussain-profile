@@ -336,7 +336,7 @@ export default function Services2() {
           <FadeIn delay={100}>
             <h1 style={{
               fontWeight: "800",
-              fontSize: isMobile ? "44px" : isTablet ? "64px" : "clamp(60px, 6vw, 100px)",
+              fontSize: isMobile ? "clamp(36px, 10vw, 44px)" : isTablet ? "64px" : "clamp(60px, 6vw, 100px)",
               lineHeight: "0.95",
               marginBottom: "24px",
             }}>
@@ -362,7 +362,7 @@ export default function Services2() {
       </section>
 
       {/* Divider */}
-      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : "0 60px" }} />
+      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : `0 clamp(32px, 4vw, 60px)` }} />
 
       {/* Services List */}
       <section style={{ padding: isMobile ? "20px 24px 60px" : isTablet ? "30px 40px 80px" : "40px 60px 120px" }}>

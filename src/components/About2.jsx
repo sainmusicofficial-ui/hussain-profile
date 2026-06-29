@@ -105,7 +105,7 @@ function PhilosophyCard({ icon, title, desc }) {
         borderRadius: "16px",
         border: `1px solid ${hovered ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.07)"}`,
         background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
-        padding: "32px 28px",
+        padding: "24px 20px",
         cursor: "default",
         transition: "background 0.3s ease, border-color 0.3s ease",
       }}

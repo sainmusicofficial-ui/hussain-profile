@@ -29,7 +29,7 @@ export default function ProjectPage() {
   }, []);
 
   const isSmall = isMobile || isTablet;
-  const px = isMobile ? "20px" : isTablet ? "32px" : "90px";
+  const px = isMobile ? "20px" : isTablet ? "32px" : "clamp(40px, 6vw, 90px)";
   const sectionPy = isMobile ? "60px" : isTablet ? "80px" : "120px";
 
   if (!project) {

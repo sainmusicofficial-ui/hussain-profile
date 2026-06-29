@@ -135,12 +135,12 @@ function Hero() {
                   ? "clamp(40px, 10vw, 60px)"
                   : isTablet
                   ? "clamp(52px, 7vw, 72px)"
-                  : "100px",
+                  : "clamp(68px, 6.5vw, 100px)",
                 fontWeight: "700",
                 lineHeight: "0.92",
                 letterSpacing: "-0.03em",
                 maxWidth: "100%",
-                marginLeft: isMobile ? "0" : isTablet ? "0" : "-40px",
+                marginLeft: 0,
               }}
             >
               Designing Brands,
@@ -232,8 +232,8 @@ function Hero() {
       {!isTablet && (
         <div
           style={{
-            marginLeft: isMobile ? "24px" : "190px",
-            marginRight: isMobile ? "24px" : "60px",
+            marginLeft: isMobile ? "24px" : "clamp(60px, 12.5vw, 190px)",
+            marginRight: isMobile ? "24px" : "clamp(24px, 4vw, 60px)",
             position: "relative",
             zIndex: 1,
           }}
@@ -244,7 +244,7 @@ function Hero() {
                 marginTop: isMobile ? "20px" : "28px",
                 maxWidth: "700px",
                 color: "#6A6A6A",
-                fontSize: isMobile ? "16px" : "20px",
+                fontSize: isMobile ? "16px" : "clamp(16px, 1.4vw, 20px)",
                 lineHeight: "1.6",
               }}
             >
@@ -445,7 +445,7 @@ function Projects() {
       data-scroll-section="projects"
       style={{
         position: "relative",
-        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : "140px 80px",
+        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : `140px clamp(40px, 5vw, 80px)`,
       }}
     >
       <FadeIn direction="up">
@@ -608,7 +608,7 @@ function StatCounter({ numericValue, suffix, isMobile }) {
       ref={wrapRef}
       style={{
         color: "white",
-        fontSize: isMobile ? "clamp(48px, 12vw, 64px)" : "72px",
+        fontSize: isMobile ? "clamp(48px, 12vw, 64px)" : "clamp(48px, 5vw, 72px)",
         fontWeight: "700",
         lineHeight: "1",
       }}
@@ -628,7 +628,7 @@ function Services() {
       data-scroll-section="services"
       style={{
         backgroundColor: "#0a0a0a",
-        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : "120px 80px",
+        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : `120px clamp(40px, 5vw, 80px)`,
       }}
     >
       <FadeIn delay={0}>
@@ -928,7 +928,7 @@ function TechStack() {
     <section
       data-scroll-section="techstack"
       style={{
-        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : "140px 80px",
+        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : `140px clamp(40px, 5vw, 80px)`,
         borderTop: "1px solid rgba(255,255,255,0.08)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}
@@ -1013,7 +1013,7 @@ function TestimonialsSection() {
     <section
       data-scroll-section="testimonials"
       style={{
-        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : "140px 60px",
+        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : `140px clamp(32px, 4vw, 60px)`,
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}
     >
@@ -1139,9 +1139,9 @@ export default function Home() {
       <CursorGlow />
       <Navbar />
 
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", overflowX: "clip" }}>
         <Hero />
-        <div style={{ position: "absolute", top: "320px", right: "120px" }}>
+        <div style={{ position: "absolute", top: "clamp(160px, 22vh, 320px)", right: "clamp(24px, 6vw, 120px)" }}>
           <CodePanel />
         </div>
       </div>

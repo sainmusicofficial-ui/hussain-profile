@@ -33,51 +33,76 @@ export const metadata = {
   metadataBase: new URL("https://hussainkhan.co.in"),
 
   alternates: {
-  canonical: "https://www.hussainkhan.co.in",
-},
+    canonical: "https://hussainkhan.co.in",
+  },
 
   title: {
-    default: "Hussain Khan | Brand Designer & UI/UX Designer",
+    default: "Hussain Khan | Brand Designer & UI/UX Designer in Bangalore",
     template: "%s | Hussain Khan",
   },
 
   description:
-    "Creative Designer & Brand Strategist helping startups and businesses build memorable brands, websites, and digital experiences.",
+    "Hussain Khan is a freelance brand designer and UI/UX designer based in Bangalore, India. 4+ years of experience helping startups and businesses build memorable brand identities, websites, and digital products.",
 
   keywords: [
     "Hussain Khan",
-    "Brand Designer",
+    "Brand Designer Bangalore",
+    "UI UX Designer Bangalore",
+    "Freelance Brand Designer India",
+    "Brand Identity Designer",
     "UI UX Designer",
     "Web Designer",
     "Product Designer",
     "Brand Strategist",
-    "Freelance Designer",
+    "Startup Designer",
+    "Logo Designer Bangalore",
+    "Mobile App Designer",
+    "MVP Design",
+    "Figma Designer",
     "Portfolio",
-    "Bangalore Designer",
   ],
 
-  authors: [{ name: "Hussain Khan" }],
+  authors: [{ name: "Hussain Khan", url: "https://hussainkhan.co.in" }],
+
+  creator: "Hussain Khan",
+
+  category: "Design",
 
   openGraph: {
-    title: "Hussain Khan | Brand Designer & UI/UX Designer",
+    title: "Hussain Khan | Brand Designer & UI/UX Designer in Bangalore",
     description:
-      "Helping startups and businesses build memorable brands, websites, and digital experiences.",
+      "Freelance brand designer and UI/UX designer based in Bangalore, India — helping startups and businesses build memorable brands, websites, and digital products.",
     url: "https://hussainkhan.co.in",
     siteName: "Hussain Khan",
-    locale: "en_US",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://hussainkhan.co.in/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Hussain Khan — Brand Designer & UI/UX Designer",
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Hussain Khan",
+    title: "Hussain Khan | Brand Designer & UI/UX Designer",
     description:
-      "Creative Designer & Brand Strategist helping startups build memorable brands and products.",
+      "Freelance brand designer and UI/UX designer based in Bangalore — helping startups build memorable brands and digital products.",
+    images: ["https://hussainkhan.co.in/og-image.jpg"],
   },
 
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
