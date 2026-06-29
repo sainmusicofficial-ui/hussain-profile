@@ -150,7 +150,7 @@ export default function Contact() {
     <div style={{ background: COLORS.void, minHeight: "100vh", paddingTop: "112px" }}>
 
       {/* Hero */}
-      <section className="contact-hero" style={{ position: "relative", overflow: "hidden", padding: `80px clamp(32px, 4vw, 60px) 120px` }}>
+      <section className="contact-hero" style={{ position: "relative", overflow: "hidden", padding: "80px 60px 120px" }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -217,10 +217,10 @@ export default function Contact() {
         </div>
       </section>
 
-      <div className="contact-divider" style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: `0 clamp(20px, 4vw, 60px)` }} />
+      <div className="contact-divider" style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "0 60px" }} />
 
       {/* Form + Info */}
-      <section className="contact-section" style={{ padding: `64px clamp(32px, 4vw, 60px) 128px` }}>
+      <section className="contact-section" style={{ padding: "64px 60px 128px" }}>
         <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "80px" }}>
 
           {/* Form */}
@@ -481,14 +481,8 @@ export default function Contact() {
         @keyframes contact-spin {
           to { transform: rotate(360deg); }
         }
-        @media (max-width: 1024px) {
-          .contact-hero { padding: 64px 40px 100px !important; }
-          .contact-section { padding: 56px 40px 112px !important; }
-          .contact-divider { margin: 0 40px !important; }
-          .contact-grid { gap: 56px !important; }
-        }
         @media (max-width: 900px) {
-          .contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+          .contact-grid { grid-template-columns: 1fr !important; gap: 56px !important; }
           .contact-hero { padding: 56px 32px 80px !important; }
           .contact-section { padding: 48px 32px 96px !important; }
           .contact-divider { margin: 0 32px !important; }
@@ -497,7 +491,7 @@ export default function Contact() {
           .contact-hero { padding: 40px 20px 56px !important; }
           .contact-section { padding: 32px 20px 72px !important; }
           .contact-form-row { grid-template-columns: 1fr !important; gap: 20px !important; }
-          .contact-grid { gap: 40px !important; }
+          .contact-grid { gap: 48px !important; }
           .contact-divider { margin: 0 20px !important; }
         }
       `}</style>

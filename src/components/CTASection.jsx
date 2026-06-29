@@ -6,13 +6,9 @@ import ParticleField from "@/components/ParticleField";
 
 export default function CTASection() {
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
-    const check = () => {
-      setIsMobile(window.innerWidth < 640);
-      setIsTablet(window.innerWidth >= 640 && window.innerWidth <= 1024);
-    };
+    const check = () => setIsMobile(window.innerWidth < 640);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -23,7 +19,7 @@ export default function CTASection() {
       data-scroll-section="cta"
       style={{
         position: "relative",
-        padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : `clamp(80px, 10vw, 140px) clamp(24px, 4vw, 60px)`,
+        padding: "140px 60px",
         borderTop: "1px solid rgba(255,255,255,0.06)",
         overflow: "hidden",
       }}
@@ -50,7 +46,7 @@ export default function CTASection() {
 
         <h2
           style={{
-            fontSize: isMobile ? "clamp(36px, 10vw, 56px)" : isTablet ? "clamp(48px, 8vw, 72px)" : "clamp(56px, 7vw, 120px)",
+            fontSize: "clamp(64px, 8vw, 120px)",
             lineHeight: "0.95",
             fontWeight: "700",
             letterSpacing: "-0.05em",
@@ -67,10 +63,10 @@ export default function CTASection() {
 
         <p
           style={{
-            marginTop: isMobile ? "24px" : "32px",
+            marginTop: "32px",
             maxWidth: "650px",
             color: "#8A8A8A",
-            fontSize: isMobile ? "16px" : "clamp(16px, 1.3vw, 18px)",
+            fontSize: "18px",
             lineHeight: "1.8",
           }}
         >
@@ -81,9 +77,9 @@ export default function CTASection() {
         <Link href="/contact" style={{ textDecoration: "none" }}>
         <button
           style={{
-            marginTop: isMobile ? "32px" : "48px",
-            height: isMobile ? "52px" : "64px",
-            padding: isMobile ? "0 28px" : "0 36px",
+            marginTop: "48px",
+            height: "64px",
+            padding: "0 36px",
             borderRadius: "999px",
             border: "none",
             backgroundColor: "#D7FF00",

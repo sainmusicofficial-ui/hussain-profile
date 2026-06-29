@@ -1,18 +1,18 @@
 export const metadata = {
-  title: "Contact",
+  title: "Work",
   description:
-    "Get in touch with Hussain Khan — freelance brand designer and UI/UX designer based in Bangalore. Available for brand identity, website design, and product design projects worldwide.",
+    "Selected branding, UI/UX, and web design projects by Hussain Khan — case studies covering startups, healthcare, hospitality, and professional services.",
   alternates: {
-    canonical: "https://hussainkhan.co.in/contact",
+    canonical: "https://hussainkhan.co.in/work",
   },
   openGraph: {
-    title: "Contact Hussain Khan | Brand & UI/UX Designer",
+    title: "Selected Work | Hussain Khan",
     description:
-      "Start a project with Hussain Khan — brand identity, UI/UX design, website design, and startup MVP design for businesses worldwide.",
-    url: "https://hussainkhan.co.in/contact",
+      "Branding, UI/UX, and web design case studies for startups and businesses across healthcare, hospitality, and professional services.",
+    url: "https://hussainkhan.co.in/work",
   },
 };
 
-export default function ContactLayout({ children }) {
+export default function WorkLayout({ children }) {
   return children;
 }

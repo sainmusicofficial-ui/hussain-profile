@@ -422,7 +422,7 @@ function InteractionPlayground({ bp }) {
   const isTablet = bp === "tablet";
 
   return (
-    <div style={{ padding: isMobile ? "60px 24px 80px" : isTablet ? "60px 40px 100px" : `60px clamp(32px, 4vw, 60px) 120px` }}>
+    <div style={{ padding: isMobile ? "60px 24px 80px" : isTablet ? "60px 40px 100px" : "60px 60px 120px" }}>
       <FadeIn>
         <p style={{ fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "3px", fontSize: "13px", color: "#D7FF00", marginBottom: "16px" }}>
           // INTERACTION
@@ -551,7 +551,7 @@ function CreativePlayground({ bp }) {
   };
 
   return (
-    <div style={{ padding: isMobile ? "60px 24px" : isTablet ? "80px 40px" : `100px clamp(32px, 4vw, 60px)` }}>
+    <div style={{ padding: isMobile ? "60px 24px" : isTablet ? "80px 40px" : "100px 60px" }}>
 
       <FadeIn>
         <p style={{ fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "3px", fontSize: "13px", color: "#D7FF00", marginBottom: "16px" }}>
@@ -653,7 +653,7 @@ function MoodMixer({ bp }) {
   const speed = Math.max(1.5, 6 - energy / 20);
 
   return (
-    <div style={{ padding: isMobile ? "60px 24px" : isTablet ? "80px 40px" : `100px clamp(32px, 4vw, 60px)` }}>
+    <div style={{ padding: isMobile ? "60px 24px" : isTablet ? "80px 40px" : "100px 60px" }}>
       <FadeIn>
         <p style={{ fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "3px", fontSize: "13px", color: "#00F0FF", marginBottom: "16px" }}>
           // MOOD MIXER
@@ -767,7 +767,7 @@ export default function Lab() {
     <div style={{ background: "#050505", minHeight: "100vh" }}>
 
       {/* Hero */}
-      <section style={{ position: "relative", overflow: "hidden", padding: isMobile ? "100px 24px 60px" : isTablet ? "140px 40px 80px" : `180px clamp(32px, 4vw, 60px) 120px` }}>
+      <section style={{ position: "relative", overflow: "hidden", padding: isMobile ? "100px 24px 60px" : isTablet ? "140px 40px 80px" : "180px 60px 120px" }}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -787,7 +787,7 @@ export default function Lab() {
             </p>
           </FadeIn>
           <FadeIn delay={100}>
-            <h1 style={{ fontWeight: "800", fontSize: isMobile ? "clamp(36px, 10vw, 44px)" : isTablet ? "64px" : "clamp(60px, 6vw, 100px)", lineHeight: "0.95", marginBottom: "24px" }}>
+            <h1 style={{ fontWeight: "800", fontSize: isMobile ? "44px" : isTablet ? "64px" : "clamp(60px, 6vw, 100px)", lineHeight: "0.95", marginBottom: "24px" }}>
               Creative{" "}
               <motion.span
                 animate={{ textShadow: ["0 0 20px rgba(0,240,255,0.4)", "0 0 60px rgba(0,240,255,0.8)", "0 0 20px rgba(0,240,255,0.4)"] }}
@@ -808,10 +808,10 @@ export default function Lab() {
       </section>
 
       {/* Divider */}
-      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : `0 clamp(32px, 4vw, 60px)` }} />
+      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : "0 60px" }} />
 
       {/* Bento Grid */}
-      <section style={{ padding: isMobile ? "40px 24px 20px" : isTablet ? "50px 40px 20px" : `60px clamp(32px, 4vw, 60px) 40px` }}>
+      <section style={{ padding: isMobile ? "40px 24px 20px" : isTablet ? "50px 40px 20px" : "60px 60px 40px" }}>
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(3, 1fr)", gap: "16px" }}>
 
           <div style={{ gridColumn: isMobile ? "1 / -1" : isTablet ? "1 / -1" : "span 2" }}>
@@ -850,7 +850,7 @@ export default function Lab() {
       </section>
 
       {/* Divider */}
-      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : `0 clamp(32px, 4vw, 60px)` }} />
+      <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: isMobile ? "0 24px" : isTablet ? "0 40px" : "0 60px" }} />
 
       {/* Interaction Playground */}
       <InteractionPlayground bp={bp} />

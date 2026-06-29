@@ -82,7 +82,7 @@ export default function Footer() {
     <footer
       style={{
         borderTop: "1px solid rgba(255,255,255,0.08)",
-        padding: isMobile ? "60px 24px 32px" : isTablet ? "80px 40px 32px" : `100px clamp(32px, 4vw, 60px) 40px`,
+        padding: isMobile ? "60px 24px 32px" : isTablet ? "80px 40px 32px" : "100px 60px 40px",
       }}
     >
       <FadeIn delay={0}>
@@ -90,7 +90,7 @@ export default function Footer() {
           style={{
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr",
-            gap: isMobile ? "48px 24px" : isTablet ? "48px 40px" : "clamp(40px, 5vw, 80px)",
+            gap: isMobile ? "48px 24px" : isTablet ? "48px 40px" : "80px",
             marginBottom: isMobile ? "48px" : "80px",
           }}
         >
