@@ -50,10 +50,9 @@ const footerLinks = [
 ];
 
 const socials = [
-  { name: "Instagram", href: "https://instagram.com" },
+  { name: "Instagram", href: "https://instagram.com/hussainkhan.design" },
   { name: "LinkedIn", href: "https://www.linkedin.com/in/hussain-khan-667b1b227/" },
   { name: "Behance", href: "https://www.behance.net/hussainkhan018" },
-  { name: "Dribbble", href: "https://dribbble.com" },
 ];
 
 const legalLinks = [

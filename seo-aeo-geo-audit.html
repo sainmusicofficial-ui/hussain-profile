@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SEO / AEO / GEO Audit — hussainkhan.co.in</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #111;
+    background: #fff;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 48px 80px;
+  }
+
+  /* Header */
+  .doc-meta { font-size: 12px; color: #999; margin-bottom: 8px; }
+  h1 { font-size: 32px; font-weight: 700; color: #111; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #999; margin-bottom: 0; }
+  hr.divider { border: none; border-top: 1px solid #ddd; margin: 32px 0 40px; }
+
+  /* Typography */
+  h2 { font-size: 20px; font-weight: 700; color: #111; margin: 48px 0 16px; }
+  h3 { font-size: 15px; font-weight: 700; color: #333; margin: 24px 0 10px; }
+  p { margin-bottom: 12px; color: #333; }
+
+  /* Summary table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+  th { background: #f5f5f5; font-weight: 700; text-align: left; padding: 10px 12px; border: 1px solid #ddd; }
+  td { padding: 9px 12px; border: 1px solid #ddd; vertical-align: top; }
+  tr:hover td { background: #fafafa; }
+  .area-seo   { color: #1d4ed8; font-weight: 600; }
+  .area-aeogeo { color: #7c3aed; font-weight: 600; }
+  .sev-critical { color: #b91c1c; font-weight: 700; }
+  .sev-high     { color: #b45309; font-weight: 700; }
+  .sev-medium   { color: #1d4ed8; font-weight: 600; }
+  .status-fixed    { color: #166534; font-weight: 700; }
+  .status-reverted { color: #b91c1c; font-weight: 700; }
+  .file-path { font-family: "SF Mono", "Fira Mono", monospace; font-size: 11px; color: #888; }
+
+  /* Detail cards */
+  .issue-card { margin: 40px 0 0; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; }
+  .issue-header {
+    background: #f9f9f9;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .issue-num { font-size: 13px; color: #999; font-weight: 600; }
+  .issue-title { font-size: 16px; font-weight: 700; color: #111; }
+  .issue-tags { margin-left: auto; font-size: 11px; color: #999; white-space: nowrap; }
+  .issue-body { display: grid; grid-template-columns: 100px 1fr; }
+  .row-label {
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    background: #fafafa;
+  }
+  .row-label.fix-label { border-bottom: none; }
+  .row-label.fix-label.reverted { color: #b91c1c; }
+  .row-label.fix-label.fixed    { color: #166534; }
+  .row-content {
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.65;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .row-content.last { border-bottom: none; }
+
+  /* Pending action box */
+  .alert {
+    background: #fff7f7;
+    border: 1.5px solid #fca5a5;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0 24px;
+  }
+  .alert p { margin-bottom: 0; color: #7f1d1d; }
+
+  /* Out of scope */
+  .oos-table { margin-top: 12px; }
+  .oos-table td:first-child {
+    font-weight: 700;
+    color: #555;
+    width: 200px;
+    background: #f9f9f9;
+    font-size: 13px;
+  }
+
+  /* Bullet list */
+  ul { margin: 10px 0 16px 20px; }
+  ul li { margin-bottom: 6px; color: #444; font-size: 13px; }
+  ul li ul { margin-top: 6px; }
+  ul li ul li { color: #666; }
+
+  @media print {
+    body { padding: 32px; }
+    .issue-card { page-break-inside: avoid; }
+    h2 { page-break-before: always; }
+    h2:first-of-type { page-break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<p class="doc-meta">hussainkhan.co.in</p>
+<h1>SEO / AEO / GEO Audit</h1>
+<p class="subtitle">Issues found and fixes applied &nbsp;•&nbsp; June 2026</p>
+<hr class="divider" />
+
+<!-- OVERVIEW -->
+<h2>Overview</h2>
+<p>An audit of the portfolio site across three dimensions:</p>
+<ul>
+  <li><strong>SEO</strong> — metadata, canonicals, indexability, per-page titles</li>
+  <li><strong>AEO</strong> (Answer Engine Optimisation) — FAQ schema, featured snippets, direct answers</li>
+  <li><strong>GEO</strong> (Generative Engine Optimisation) — structured data for AI citation by ChatGPT, Perplexity, Google SGE</li>
+</ul>
+<p>5 issues were found. 4 were fixed. 1 (the JSON-LD upgrade) was reverted by a linter after the session and needs to be re-applied.</p>
+
+<!-- SUMMARY TABLE -->
+<h2>Summary</h2>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Area</th>
+      <th>Severity</th>
+      <th>Issue</th>
+      <th>File</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>01</td>
+      <td class="area-seo">SEO</td>
+      <td class="sev-critical">Critical</td>
+      <td>Contact page had copy-pasted Work metadata</td>
+      <td class="file-path">contact/layout.jsx</td>
+      <td class="status-fixed">Fixed</td>
+    </tr>
+    <tr>
+      <td>02</td>
+      <td class="area-seo">SEO</td>
+      <td class="sev-high">High</td>
+      <td>Canonical URL inconsistency (www vs non-www)</td>
+      <td class="file-path">app/layout.js</td>
+      <td class="status-fixed">Fixed</td>
+    </tr>
+    <tr>
+      <td>03</td>
+      <td class="area-seo">SEO</td>
+      <td class="sev-high">High</td>
+      <td>Case study pages had zero unique metadata</td>
+      <td class="file-path">work/[slug]/ (new file)</td>
+      <td class="status-fixed">Fixed</td>
+    </tr>
+    <tr>
+      <td>04</td>
+      <td class="area-seo">SEO / GEO</td>
+      <td class="sev-medium">Medium</td>
+      <td>Root metadata — weak keywords, no location targeting, no googleBot directives</td>
+      <td class="file-path">app/layout.js</td>
+      <td class="status-fixed">Fixed</td>
+    </tr>
+    <tr>
+      <td>05</td>
+      <td class="area-aeogeo">AEO / GEO</td>
+      <td class="sev-critical">Critical</td>
+      <td>Missing FAQPage, WebSite, and AggregateRating schemas</td>
+      <td class="file-path">components/JsonLd.jsx</td>
+      <td class="status-reverted">⚠ Reverted — re-apply</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- DETAILS -->
+<h2>Issue Details</h2>
+
+<!-- 01 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">01</span>
+    <span class="issue-title">Contact page had copy-pasted Work metadata</span>
+    <span class="issue-tags">SEO &nbsp;·&nbsp; Critical &nbsp;·&nbsp; contact/layout.jsx</span>
+  </div>
+  <div class="issue-body">
+    <div class="row-label">Problem</div>
+    <div class="row-content">The contact page exported <code>title: "Work"</code>, a description about case studies, and a canonical pointing to <code>/work</code>. Google would have indexed the Contact page as a near-duplicate of the Work page, suppressing it from rankings entirely.</div>
+    <div class="row-label fix-label fixed">Fix</div>
+    <div class="row-content last">Replaced with correct Contact metadata: title <em>"Contact"</em>, description about hiring and getting in touch, canonical correctly set to <code>/contact</code>, function renamed from <code>WorkLayout</code> to <code>ContactLayout</code>.</div>
+  </div>
+</div>
+
+<!-- 02 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">02</span>
+    <span class="issue-title">Canonical URL inconsistency (www vs non-www)</span>
+    <span class="issue-tags">SEO &nbsp;·&nbsp; High &nbsp;·&nbsp; app/layout.js</span>
+  </div>
+  <div class="issue-body">
+    <div class="row-label">Problem</div>
+    <div class="row-content"><code>metadataBase</code> was set to <code>hussainkhan.co.in</code> (no www) but the root canonical was set to <code>www.hussainkhan.co.in</code>. Google can treat these as separate origins and split PageRank between them instead of consolidating it.</div>
+    <div class="row-label fix-label fixed">Fix</div>
+    <div class="row-content last">Standardised to <code>hussainkhan.co.in</code> (non-www) everywhere, consistent with the <code>metadataBase</code> value. Also fixed the indentation formatting of the <code>alternates</code> block.</div>
+  </div>
+</div>
+
+<!-- 03 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">03</span>
+    <span class="issue-title">Case study pages had zero unique metadata</span>
+    <span class="issue-tags">SEO &nbsp;·&nbsp; High &nbsp;·&nbsp; work/[slug]/layout.jsx (new)</span>
+  </div>
+  <div class="issue-body">
+    <div class="row-label">Problem</div>
+    <div class="row-content">Because <code>page.jsx</code> uses <code>"use client"</code>, Next.js cannot export <code>generateMetadata</code> from it. Every case study page — medizap, ruyadar, brisket-and-chops, ss-auditors, olesome, aurenza, myas-and-co — was serving identical metadata inherited from the root layout. Google saw 7 identical pages with the same title and description.</div>
+    <div class="row-label fix-label fixed">Fix</div>
+    <div class="row-content last">Created <code>src/app/work/[slug]/layout.jsx</code> as a server component that runs <code>generateMetadata({ params })</code>, pulling each project's <code>title</code>, <code>description</code>, and <code>services</code> from <code>caseStudies.js</code>. Every project now gets a unique title, description, canonical, OpenGraph, and Twitter card.</div>
+  </div>
+</div>
+
+<!-- 04 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">04</span>
+    <span class="issue-title">Root metadata — weak keywords, no location targeting, no googleBot directives</span>
+    <span class="issue-tags">SEO / GEO &nbsp;·&nbsp; Medium &nbsp;·&nbsp; app/layout.js</span>
+  </div>
+  <div class="issue-body">
+    <div class="row-label">Problem</div>
+    <div class="row-content">
+      Keywords were generic with no city or country context. No <code>googleBot</code> directive meant Google could truncate snippets and preview images by default. The OG image was not declared as a proper object so social shares showed no preview. Locale was <code>en_US</code> despite the site being India-based. No <code>creator</code> or <code>category</code> fields for AI entity recognition.
+    </div>
+    <div class="row-label fix-label fixed">Fix</div>
+    <div class="row-content last">
+      Added location-specific keywords (<em>Brand Designer Bangalore, Freelance Brand Designer India, Logo Designer Bangalore</em>, etc.). Added explicit <code>googleBot</code> object with <code>max-image-preview: large</code> and <code>max-snippet: -1</code> to allow rich snippets. Added <code>creator</code>, <code>category</code> fields. Declared full OG image object (1200×630). Changed locale to <code>en_IN</code>.
+    </div>
+  </div>
+</div>
+
+<!-- 05 -->
+<div class="issue-card">
+  <div class="issue-header">
+    <span class="issue-num">05</span>
+    <span class="issue-title">Missing FAQPage, WebSite, and AggregateRating schemas</span>
+    <span class="issue-tags">AEO / GEO &nbsp;·&nbsp; Critical &nbsp;·&nbsp; components/JsonLd.jsx</span>
+  </div>
+  <div class="issue-body">
+    <div class="row-label">Problem</div>
+    <div class="row-content">
+      The existing JSON-LD only had <code>Person</code> and <code>ProfessionalService</code> schemas. This meant:
+      <ul style="margin-top:8px">
+        <li>No FAQ rich snippets in Google Search results</li>
+        <li>No star ratings from testimonials showing in search</li>
+        <li>AI tools (ChatGPT, Perplexity, Google SGE) had no structured Q&amp;A to cite when someone asks "who is Hussain Khan" or "find a brand designer in Bangalore"</li>
+        <li>No WebSite entity for Google Knowledge Panel</li>
+      </ul>
+    </div>
+    <div class="row-label fix-label reverted">⚠ Reverted</div>
+    <div class="row-content last">Four schemas were written and applied but were reverted by a linter. They need to be re-committed. See the Pending Action section below for what exactly needs to go back in.</div>
+  </div>
+</div>
+
+<!-- PENDING ACTION -->
+<h2>Pending Action — Re-apply JsonLd.jsx</h2>
+
+<div class="alert">
+  <p><strong>Action required:</strong> The JSON-LD upgrades were written during this session but were reverted. The file <code>src/components/JsonLd.jsx</code> needs to be updated and committed before the linter runs.</p>
+</div>
+
+<p>The four schemas that need to go into <code>JsonLd.jsx</code>:</p>
+
+<h3>1. FAQPage schema</h3>
+<p>8 Q&amp;As covering the most common search queries:</p>
+<ul>
+  <li>What services does Hussain Khan offer?</li>
+  <li>Where is Hussain Khan based?</li>
+  <li>How long does brand identity design take? (3–6 weeks)</li>
+  <li>How long does website design take? (4–8 weeks)</li>
+  <li>How long does startup MVP design take? (2–4 weeks)</li>
+  <li>What tools does he use? (Figma, React, Next.js, etc.)</li>
+  <li>How many projects completed? (50+, 30+ clients, 4+ years)</li>
+  <li>How do I contact Hussain Khan?</li>
+</ul>
+
+<h3>2. AggregateRating + Review schema</h3>
+<p>5/5 rating built from the three existing testimonials (Shuaib / Medizap, Affan Khan / Ruyadar, Sayeed / SS Auditors). Enables star ratings in Google search results — a significant click-through rate boost.</p>
+
+<h3>3. WebSite schema with SearchAction</h3>
+<p>Declares the site as a searchable entity. Used by Google to build a Knowledge Panel and by AI models to understand the site's purpose and author.</p>
+
+<h3>4. Enriched Person + ProfessionalService with <code>@id</code> cross-references</h3>
+<p>Each schema gets a stable <code>@id</code> (e.g. <code>https://hussainkhan.co.in/#person</code>) so Google and AI models can resolve them as the same entity across pages.</p>
+
+<!-- OUT OF SCOPE -->
+<h2>Out of Scope — Not Changed</h2>
+<p>Additional improvements not addressed in this session:</p>
+
+<table class="oos-table">
+  <tbody>
+    <tr>
+      <td>OG image file missing</td>
+      <td><code>og-image.jpg</code> is referenced in metadata but does not exist in <code>/public</code>. Create a 1200×630px image and save it as <code>public/og-image.jpg</code>.</td>
+    </tr>
+    <tr>
+      <td>Per-project OG images</td>
+      <td>Each case study could have its own OG image (e.g. <code>public/og/medizap.jpg</code>) for better social share previews. Update <code>work/[slug]/layout.jsx</code> accordingly.</td>
+    </tr>
+    <tr>
+      <td>BreadcrumbList schema</td>
+      <td>Case study pages would benefit from BreadcrumbList structured data (Home → Work → Project Name) for richer search result snippets.</td>
+    </tr>
+    <tr>
+      <td>About page — GEO depth</td>
+      <td>The About page has no unique JSON-LD. A <code>WebPage</code> schema with <code>speakable</code> content would help AI models cite biographical facts correctly.</td>
+    </tr>
+    <tr>
+      <td>Google Search Console</td>
+      <td>Submit <code>hussainkhan.co.in/sitemap.xml</code> in Google Search Console and verify the property to accelerate indexing of all the fixed pages.</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
