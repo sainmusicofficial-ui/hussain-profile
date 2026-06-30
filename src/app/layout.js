@@ -41,8 +41,8 @@ export const metadata = {
     template: "%s | Hussain Khan",
   },
 
-  description:
-    "Hussain Khan is a freelance brand identity designer and UI/UX designer based in Bangalore, India. 4+ years helping startups build memorable brands and digital products.",
+ description:
+  "Freelance brand designer and UI/UX designer in Bangalore. 4+ years helping startups build memorable brands and digital products.",
 
   keywords: [
     "Hussain Khan",
@@ -85,7 +85,7 @@ export const metadata = {
     description:
       "Freelance brand identity designer and UI/UX designer based in Bangalore — helping startups build memorable brands and products.",
     creator: "@hussainkhandesign",
-    images: ["https://hussainkhan.co.in/og-image.jpg"],
+    images: ["https://hussainkhan.co.in/og-image.png"],
   },
 
   robots: {

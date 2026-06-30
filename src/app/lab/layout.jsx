@@ -12,7 +12,7 @@ export const metadata = {
     url: "https://hussainkhan.co.in/lab",
     images: [
       {
-        url: "https://hussainkhan.co.in/og-image.jpg",
+        url: "https://hussainkhan.co.in/og-image.png",
         width: 1200,
         height: 630,
         alt: "Hussain Khan — Lab",
