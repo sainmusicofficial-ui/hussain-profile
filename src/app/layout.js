@@ -3,6 +3,7 @@ import {
   JetBrains_Mono,
   Geist_Mono,
 } from "next/font/google";
+import Script from "next/script";
 
 import "./globals.css";
 
@@ -41,8 +42,8 @@ export const metadata = {
     template: "%s | Hussain Khan",
   },
 
- description:
-  "Freelance brand designer and UI/UX designer in Bangalore. 4+ years helping startups build memorable brands and digital products.",
+  description:
+    "Freelance brand designer and UI/UX designer in Bangalore. 4+ years helping startups build memorable brands and digital products.",
 
   keywords: [
     "Hussain Khan",
@@ -64,7 +65,7 @@ export const metadata = {
   openGraph: {
     title: "Hussain Khan | Freelance Brand & UI/UX Designer in Bangalore",
     description:
-      "Hussain Khan is a freelance brand identity designer and UI/UX designer based in Bangalore, India. 4+ years helping startups build memorable brands and digital products.",
+      "Freelance brand designer and UI/UX designer in Bangalore. 4+ years helping startups build memorable brands and digital products.",
     url: "https://hussainkhan.co.in",
     siteName: "Hussain Khan",
     locale: "en_IN",
@@ -83,7 +84,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Hussain Khan | Freelance Brand & UI/UX Designer",
     description:
-      "Freelance brand identity designer and UI/UX designer based in Bangalore — helping startups build memorable brands and products.",
+      "Freelance brand designer and UI/UX designer in Bangalore — helping startups build memorable brands and products.",
     creator: "@hussainkhandesign",
     images: ["https://hussainkhan.co.in/og-image.png"],
   },
@@ -107,6 +108,20 @@ export default function RootLayout({ children }) {
       <body
         className={`${jakarta.variable} ${jetbrains.variable} ${geistMono.variable}`}
       >
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+          `}
+        </Script>
+
         <JsonLd />
         <SmoothScroll>
           {children}
