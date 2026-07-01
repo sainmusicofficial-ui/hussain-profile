@@ -261,7 +261,8 @@ function ProjectCard({ project, isMobile, isTablet, index }) {
           onMouseLeave={() => setHovered(false)}
           style={{
             position: "relative",
-            height: isMobile ? "280px" : isTablet ? "380px" : "520px",
+            aspectRatio: "16/9",
+            height: "auto",
             borderRadius: isMobile ? "20px" : "28px",
             overflow: "hidden",
             border: `1px solid ${hovered ? "rgba(215,255,0,0.3)" : "#1B1B1B"}`,

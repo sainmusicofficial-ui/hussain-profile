@@ -36,9 +36,8 @@ export default function ProjectPage() {
     return <div className="text-white p-20">Project not found</div>;
   }
 
-  // Image helpers
-  const heroImage = `/images/projects/${slug}1.jpg`;
-  const galleryImages = [2, 3, 4].map((n) => `/images/projects/${slug}${n}.jpg`);
+  const heroImage = `/images/projects/${slug}1.png`;
+  const galleryImages = [2, 3, 4].map((n) => `/images/projects/${slug}${n}.png`);
 
   return (
     <>
@@ -60,7 +59,12 @@ export default function ProjectPage() {
 
           <div
             className="relative z-10 max-w-[1800px] mx-auto"
-            style={{ paddingLeft: px, paddingRight: px, paddingTop: isMobile ? "100px" : "140px", paddingBottom: isMobile ? "48px" : "80px" }}
+            style={{
+              paddingLeft: px,
+              paddingRight: px,
+              paddingTop: isMobile ? "100px" : "140px",
+              paddingBottom: isMobile ? "48px" : "80px",
+            }}
           >
             <Link
               href="/work"
@@ -86,67 +90,46 @@ export default function ProjectPage() {
               {project.title}
             </h1>
 
-            {project.subtitle && (
-              <p
-                className="text-[#7E7E89]"
-                style={{
-                  fontSize: isMobile ? "20px" : isTablet ? "28px" : "40px",
-                  lineHeight: "1.2",
-                  fontWeight: "300",
-                  marginTop: isMobile ? "12px" : "20px",
-                }}
-              >
-                {project.subtitle}
-              </p>
-            )}
-
             <div className="flex items-center flex-wrap gap-6" style={{ marginTop: isMobile ? "24px" : "40px" }}>
               <div className="flex items-center gap-2">
                 <Clock size={16} className="text-[#6A6A6A]" />
-                <span className="font-mono text-[#8A8A8A] text-[14px]">{project.duration}</span>
+                <span className="font-mono text-[#8A8A8A] text-[14px]">{project.year}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Layers size={16} className="text-[#6A6A6A]" />
-                <span className="font-mono text-[#8A8A8A] text-[14px]">{project.year}</span>
+                <span className="font-mono text-[#8A8A8A] text-[14px]">{project.services?.join(" · ")}</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── HERO IMAGE ──────────────────────────────────────── */}
-        <section style={{ padding: isMobile ? "24px 20px" : isTablet ? "32px" : "40px 60px", marginBottom: isMobile ? "40px" : "80px" }}>
+        {/* ── HERO IMAGE — full natural height, no cropping ───── */}
+        <section style={{ padding: isMobile ? "24px 20px" : isTablet ? "32px" : "40px 60px" }}>
           <div
             style={{
-              height: isMobile ? "240px" : isTablet ? "380px" : "520px",
               borderRadius: isMobile ? "16px" : "24px",
               overflow: "hidden",
               position: "relative",
               border: "1px solid rgba(255,255,255,0.06)",
-              background: "radial-gradient(circle at 50% 50%, rgba(0,240,255,.08), transparent 35%), #081010",
+              background: "#081010",
+              width: "100%",
             }}
           >
             <Image
               src={heroImage}
               alt={project.title}
-              fill
-              style={{ objectFit: "cover" }}
-              onError={(e) => { e.target.style.display = "none"; }}
+              width={1600}
+              height={900}
+              style={{
+                width: "100%",
+                height: "auto",
+                display: "block",
+              }}
+              onError={(e) => {
+                e.target.parentElement.style.minHeight = "400px";
+                e.target.style.display = "none";
+              }}
             />
-            {/* Fallback ghost text */}
-            <div style={{
-              position: "absolute", inset: 0,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              pointerEvents: "none",
-            }}>
-              <h2 style={{
-                fontSize: isMobile ? "48px" : isTablet ? "80px" : "120px",
-                fontWeight: 800,
-                color: "rgba(255,255,255,0.04)",
-                userSelect: "none",
-              }}>
-                {project.title}
-              </h2>
-            </div>
           </div>
         </section>
 
@@ -155,6 +138,7 @@ export default function ProjectPage() {
           padding: `${sectionPy} ${px}`,
           borderTop: "1px solid rgba(255,255,255,0.05)",
           borderBottom: "1px solid rgba(255,255,255,0.05)",
+          marginTop: isMobile ? "24px" : "40px",
         }}>
           <div style={{
             display: "grid",
@@ -178,7 +162,7 @@ export default function ProjectPage() {
               backdropFilter: "blur(10px)",
             }}>
               <p style={{ color: "#00F0FF", fontFamily: "monospace", fontSize: "13px", letterSpacing: "2px", marginBottom: "20px" }}>
-                // SERVICES
+                // TECH STACK
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 {project.techStack?.map((tech) => (
@@ -222,7 +206,7 @@ export default function ProjectPage() {
           </div>
         </section>
 
-        {/* ── IMAGE GALLERY ───────────────────────────────────── */}
+        {/* ── IMAGE GALLERY — natural height, no cropping ─────── */}
         <section style={{ padding: `${sectionPy} ${px}`, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
           <p style={{ color: "#D7FF00", fontFamily: "monospace", fontSize: "13px", letterSpacing: "2px", marginBottom: "16px" }}>
             // PROJECT GALLERY
@@ -231,45 +215,48 @@ export default function ProjectPage() {
             Visual Work
           </h2>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-            gap: isMobile ? "16px" : "20px",
-          }}>
-            {galleryImages.map((src, i) => (
-              <div
-                key={i}
-                style={{
-                  height: isMobile ? "200px" : isTablet ? "280px" : "360px",
+          <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? "16px" : "24px" }}>
+            {/* First image — full width */}
+            <div style={{
+              borderRadius: "16px",
+              overflow: "hidden",
+              border: "1px solid rgba(255,255,255,0.05)",
+              background: "rgba(255,255,255,0.02)",
+            }}>
+              <Image
+                src={galleryImages[0]}
+                alt={`${project.title} — Gallery 1`}
+                width={1600}
+                height={900}
+                style={{ width: "100%", height: "auto", display: "block" }}
+                onError={(e) => { e.target.style.display = "none"; }}
+              />
+            </div>
+
+            {/* Images 2 and 3 — side by side on desktop */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+              gap: isMobile ? "16px" : "24px",
+            }}>
+              {[galleryImages[1], galleryImages[2]].map((src, i) => (
+                <div key={i} style={{
                   borderRadius: "16px",
                   overflow: "hidden",
-                  position: "relative",
                   border: "1px solid rgba(255,255,255,0.05)",
                   background: "rgba(255,255,255,0.02)",
-                  // First image spans full width
-                  gridColumn: i === 0 && !isMobile ? "1 / -1" : "auto",
-                  height: i === 0 && !isMobile ? (isTablet ? "320px" : "440px") : (isMobile ? "200px" : isTablet ? "240px" : "300px"),
-                }}
-              >
-                <Image
-                  src={src}
-                  alt={`${project.title} ${i + 2}`}
-                  fill
-                  style={{ objectFit: "cover" }}
-                  onError={(e) => { e.target.style.display = "none"; }}
-                />
-                {/* Placeholder when no image */}
-                <div style={{
-                  position: "absolute", inset: 0,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "rgba(255,255,255,0.01)",
                 }}>
-                  <span style={{ color: "rgba(255,255,255,0.08)", fontFamily: "monospace", fontSize: "13px", letterSpacing: "2px" }}>
-                    {slug}{i + 2}.jpg
-                  </span>
+                  <Image
+                    src={src}
+                    alt={`${project.title} — Gallery ${i + 2}`}
+                    width={800}
+                    height={600}
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                    onError={(e) => { e.target.style.display = "none"; }}
+                  />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
