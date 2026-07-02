@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&<>/\\|!?";
+const SESSION_KEY = "hk_preloader_shown";
 
 function scramble(setText, setGlitch, finalText, duration, delay) {
   return new Promise((resolve) => {
@@ -33,7 +34,9 @@ function scramble(setText, setGlitch, finalText, duration, delay) {
 }
 
 export default function Preloader({ onComplete }) {
-  const [visible, setVisible] = useState(true);
+  // Start hidden so server-rendered content is never blocked and repeat
+  // visits show nothing. We decide whether to actually run inside useEffect.
+  const [visible, setVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
 
   const [nameText, setNameText] = useState("");
@@ -55,6 +58,32 @@ export default function Preloader({ onComplete }) {
   useEffect(() => {
     if (ranRef.current) return;
     ranRef.current = true;
+
+    // ── Session gate ────────────────────────────────────────────────
+    // If we've already shown the preloader this session, skip entirely.
+    let alreadyShown = false;
+    try {
+      alreadyShown = sessionStorage.getItem(SESSION_KEY) === "1";
+    } catch (e) {
+      // sessionStorage unavailable (privacy mode etc.) — treat as first visit
+      alreadyShown = false;
+    }
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (alreadyShown || prefersReduced) {
+      // Mark as shown and fire completion immediately — no animation, no block
+      try { sessionStorage.setItem(SESSION_KEY, "1"); } catch (e) {}
+      onComplete && onComplete();
+      return;
+    }
+
+    // First visit of the session — run the full intro
+    try { sessionStorage.setItem(SESSION_KEY, "1"); } catch (e) {}
+    setVisible(true);
 
     let cancelled = false;
 

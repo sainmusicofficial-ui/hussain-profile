@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Quote, Target, LayoutDashboard, Globe, Rocket, Smartphone } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -113,7 +113,7 @@ function Hero() {
             marginBottom: isMobile ? "20px" : "30px",
             fontFamily: "var(--font-geist-mono)",
           }}>
-            Creative Designer & Brand Strategist
+            Creative Designer & Brand Strategist · Bangalore
           </p>
         </FadeIn>
 
@@ -131,17 +131,17 @@ function Hero() {
             maxWidth: isSmall ? "100%" : "55%",
             marginBottom: isMobile ? "20px" : "28px",
           }}>
-            Designing Brands,
+            Brands that get
             <br />
-            Interfaces &{" "}
+            startups noticed,{" "}
             <span style={{
               color: "#D7FF00",
               textShadow: "0 0 18px rgba(215,255,0,0.65), 0 0 42px rgba(215,255,0,0.30)",
             }}>
-              Digital
+              funded
             </span>
             <br />
-            Experiences
+            & chosen.
           </h1>
         </FadeIn>
 
@@ -153,9 +153,9 @@ function Hero() {
             lineHeight: "1.6",
             marginBottom: isMobile ? "32px" : "42px",
           }}>
-            Creative direction meets modern digital execution.
-            I help startups and brands build unforgettable
-            visual identities and products.
+            Strategy, design, and code from one person — no agency
+            handoffs, no lost-in-translation. I help startups and
+            businesses build identities and products people remember.
           </p>
         </FadeIn>
 
@@ -166,7 +166,7 @@ function Hero() {
             flexWrap: "wrap",
             gap: isMobile ? "12px" : "20px",
           }}>
-            <Link href="/work">
+            <Link href="/contact">
               <button
                 style={{
                   height: isMobile ? "52px" : "60px",
@@ -189,11 +189,11 @@ function Hero() {
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                View Work
+                Book a discovery call
               </button>
             </Link>
 
-            <Link href="/about">
+            <Link href="/work">
               <button
                 style={{
                   height: isMobile ? "52px" : "60px",
@@ -218,7 +218,7 @@ function Hero() {
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                About Me
+                See the work
               </button>
             </Link>
           </div>
@@ -252,25 +252,45 @@ function Hero() {
 // ════════════════════════════════════════════════════════════════════════════
 function ProjectCard({ project, isMobile, isTablet, index }) {
   const [hovered, setHovered] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   return (
     <FadeIn delay={index * 150} direction={index % 2 === 0 ? "left" : "right"}>
       <Link href={`/work/${project.slug}`} style={{ textDecoration: "none" }}>
-        <div
+        <motion.div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
+          animate={reduceMotion ? {} : { x: hovered ? 6 : 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
           style={{
             position: "relative",
             aspectRatio: "16/9",
             height: "auto",
             borderRadius: isMobile ? "20px" : "28px",
             overflow: "hidden",
-            border: `1px solid ${hovered ? "rgba(215,255,0,0.3)" : "#1B1B1B"}`,
+            border: `1px solid ${hovered ? "rgba(215,255,0,0.4)" : "#1B1B1B"}`,
             cursor: "pointer",
-            transform: hovered ? "translateY(-8px)" : "translateY(0)",
-            transition: "transform 0.5s ease, border-color 0.5s ease",
+            transition: "border-color 0.4s ease",
           }}
         >
+          {/* Lime left-edge bar — scales from top on hover */}
+          <motion.div
+            initial={false}
+            animate={{ scaleY: hovered && !reduceMotion ? 1 : 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: isMobile ? "4px" : "5px",
+              height: "100%",
+              background: "#D7FF00",
+              transformOrigin: "top",
+              zIndex: 3,
+              boxShadow: "0 0 20px rgba(215,255,0,0.5)",
+            }}
+          />
+
           <div style={{
             position: "absolute", inset: 0,
             opacity: hovered ? 0.8 : 0.4,
@@ -282,36 +302,47 @@ function ProjectCard({ project, isMobile, isTablet, index }) {
             <Image src={project.image} alt={project.title} fill
               style={{
                 objectFit: "cover",
-                transform: hovered ? "scale(1.05)" : "scale(1)",
+                transform: hovered && !reduceMotion ? "scale(1.05)" : "scale(1)",
                 transition: "transform 0.7s ease",
               }}
             />
-            <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.55)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} />
           </div>
           <div style={{
             position: "relative", zIndex: 2, height: "100%",
             padding: isMobile ? "24px" : "32px",
             display: "flex", flexDirection: "column", justifyContent: "flex-end",
           }}>
-            <p style={{
-              color: "#D7FF00", fontSize: isMobile ? "9px" : "10px",
-              textTransform: "uppercase", letterSpacing: "0.15em",
-              marginBottom: isMobile ? "8px" : "16px", fontFamily: "monospace",
-            }}>
-              {project.services.join(" • ")}
-            </p>
             <h3 style={{
               color: "#ffffff",
               fontSize: isMobile ? "22px" : isTablet ? "26px" : "34px",
-              fontWeight: "700", marginBottom: "8px", lineHeight: "1.1",
+              fontWeight: "700", marginBottom: "10px", lineHeight: "1.1",
+              display: "flex", alignItems: "center", gap: "10px",
             }}>
               {project.title}
+              <motion.span
+                animate={{ x: hovered && !reduceMotion ? 6 : 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                style={{ color: "#D7FF00", display: "inline-block" }}
+              >
+                →
+              </motion.span>
             </h3>
-            <p style={{ color: "#7A7A7A", fontSize: isMobile ? "13px" : "15px" }}>
-              {project.category}
+            <p style={{
+              color: "#C8C8C8", fontSize: isMobile ? "13px" : "15px",
+              lineHeight: "1.5", marginBottom: isMobile ? "12px" : "16px",
+              maxWidth: "90%",
+            }}>
+              {project.problem}
+            </p>
+            <p style={{
+              color: "#7A7A7A", fontSize: isMobile ? "9px" : "10px",
+              textTransform: "uppercase", letterSpacing: "0.15em", fontFamily: "monospace",
+            }}>
+              {project.category} • {project.services.join(" • ")}
             </p>
           </div>
-        </div>
+        </motion.div>
       </Link>
     </FadeIn>
   );
@@ -418,32 +449,46 @@ const services = [
 ];
 
 const stats = [
-  { numericValue: 50, suffix: "+", label: "Projects Completed" },
-  { numericValue: 30, suffix: "+", label: "Happy Clients" },
+  { numericValue: 20, suffix: "+", label: "Projects Completed" },
+  { numericValue: 15, suffix: "+", label: "Happy Clients" },
   { numericValue: 4, suffix: "+", label: "Years Experience" },
-  { numericValue: 100, suffix: "%", label: "Client Satisfaction" },
+  { staticValue: "30 days", label: "Post-Launch Support" },
 ];
 
-function StatCounter({ numericValue, suffix, isMobile }) {
+function StatCounter({ numericValue, suffix, staticValue, isMobile }) {
   const numRef = useRef(null);
   const wrapRef = useRef(null);
 
+  // Final value rendered directly into HTML so crawlers + no-JS users see real numbers
+  const finalText = staticValue != null ? staticValue : `${numericValue}${suffix}`;
+
   useEffect(() => {
+    // Static (non-numeric) stats don't animate
+    if (staticValue != null) return;
+
     const el = numRef.current;
     const wrap = wrapRef.current;
     if (!el || !wrap) return;
+
+    // Respect reduced-motion: leave the server-rendered final value in place
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
     const counter = { val: 0 };
+    // Start from 0 only once we're about to animate (progressive enhancement)
+    el.textContent = `0${suffix}`;
     const trigger = ScrollTrigger.create({
       trigger: wrap, start: "top 85%", once: true,
       onEnter: () => {
         gsap.to(counter, {
           val: numericValue, duration: 1.6, ease: "power2.out",
           onUpdate: () => { el.textContent = Math.round(counter.val) + suffix; },
+          onComplete: () => { el.textContent = `${numericValue}${suffix}`; },
         });
       },
     });
     return () => trigger.kill();
-  }, [numericValue, suffix]);
+  }, [numericValue, suffix, staticValue]);
 
   return (
     <h3 ref={wrapRef} style={{
@@ -451,7 +496,7 @@ function StatCounter({ numericValue, suffix, isMobile }) {
       fontSize: isMobile ? "clamp(48px, 12vw, 64px)" : "72px",
       fontWeight: "700", lineHeight: "1",
     }}>
-      <span ref={numRef}>0{suffix}</span>
+      <span ref={numRef}>{finalText}</span>
     </h3>
   );
 }
@@ -617,7 +662,7 @@ function Services() {
           {stats.map((stat, i) => (
             <FadeIn key={stat.label} delay={i * 100}>
               <div>
-                <StatCounter numericValue={stat.numericValue} suffix={stat.suffix} isMobile={isMobile} />
+                <StatCounter numericValue={stat.numericValue} suffix={stat.suffix} staticValue={stat.staticValue} isMobile={isMobile} />
                 <p style={{ color: "#6f6f6f", fontSize: "15px", letterSpacing: "0.08em", marginTop: "12px" }}>
                   {stat.label}
                 </p>
@@ -634,10 +679,9 @@ function Services() {
 //  SECTION: TechStack
 // ════════════════════════════════════════════════════════════════════════════
 const tools = [
-  "Figma", "Photoshop", "Illustrator", "Canva", "After Effects",
-  "HTML5", "CSS3", "JavaScript", "React", "Next.js", "Tailwind CSS",
-  "Framer Motion", "Git", "GitHub", "VS Code",
-  "WordPress", "Elementor", "Vercel", "Firebase", "ChatGPT", "Claude",
+  "Figma", "Photoshop", "Illustrator", "After Effects",
+  "React", "Next.js", "Tailwind CSS", "Framer Motion",
+  "Firebase", "Vercel",
 ];
 
 function ToolTag({ tool, index, isMobile }) {
@@ -688,7 +732,7 @@ function TechStack() {
             fontWeight: "700", letterSpacing: "-0.04em",
             marginBottom: isMobile ? "40px" : "70px",
           }}>
-            Tools & Technologies
+            How the work gets built
           </h2>
         </FadeIn>
         <FadeIn delay={200}>
@@ -771,6 +815,157 @@ function TestimonialsSection() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
+//  SECTION: Marquee proof strip (#5)
+// ════════════════════════════════════════════════════════════════════════════
+function MarqueeStrip() {
+  const reduceMotion = useReducedMotion();
+  const clients = [
+    "SS Auditors & Tax Consultants", "RuyaDar Projects", "Medizap",
+    "Brisket & Chops", "Aurenza", "M Y A S & Co",
+  ];
+
+  const Item = ({ name }) => (
+    <span style={{
+      color: "#D7FF00",
+      fontFamily: "var(--font-geist-mono)",
+      fontSize: "13px",
+      letterSpacing: "0.2em",
+      textTransform: "uppercase",
+      whiteSpace: "nowrap",
+      padding: "0 32px",
+    }}>
+      {name}
+      <span style={{ color: "#333", marginLeft: "32px" }}>/</span>
+    </span>
+  );
+
+  // Reduced-motion: static wrapped row, no animation
+  if (reduceMotion) {
+    return (
+      <div style={{
+        borderTop: "1px solid rgba(215,255,0,0.12)",
+        borderBottom: "1px solid rgba(215,255,0,0.12)",
+        background: "rgba(215,255,0,0.02)",
+        padding: "20px 24px",
+        display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px 0",
+      }}>
+        {clients.map((c) => <Item key={c} name={c} />)}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      borderTop: "1px solid rgba(215,255,0,0.12)",
+      borderBottom: "1px solid rgba(215,255,0,0.12)",
+      background: "rgba(215,255,0,0.02)",
+      padding: "20px 0",
+      overflow: "hidden",
+      position: "relative",
+    }}>
+      <div style={{
+        display: "flex",
+        width: "max-content",
+        animation: "hk-marquee 28s linear infinite",
+      }}>
+        {/* duplicated for seamless loop */}
+        {[...clients, ...clients].map((c, i) => <Item key={i} name={c} />)}
+      </div>
+      <style>{`
+        @keyframes hk-marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+//  SECTION: Process (#6)
+// ════════════════════════════════════════════════════════════════════════════
+const processSteps = [
+  {
+    num: "01", label: "Discovery call",
+    title: "Discovery call",
+    desc: "30 minutes. We talk goals, market, and budget — and I give you an honest assessment of whether we're a fit.",
+  },
+  {
+    num: "02", label: "Strategy & proposal",
+    title: "Strategy & proposal",
+    desc: "Fixed scope, price, and timeline — in writing, within 48 hours. No surprises later.",
+  },
+  {
+    num: "03", label: "Design & build",
+    title: "Design & build",
+    desc: "Weekly checkpoints. You see progress constantly — no big reveal at the end, no guessing.",
+  },
+  {
+    num: "04", label: "Launch & support",
+    title: "Launch & support",
+    desc: "Documented handover plus 30 days of post-launch fixes included. You're never left stranded.",
+  },
+];
+
+function Process() {
+  const { isMobile, isTablet } = useResponsive();
+
+  return (
+    <section data-scroll-section="process" style={{
+      padding: isMobile ? "80px 24px" : isTablet ? "100px 40px" : "140px 80px",
+      borderTop: "1px solid rgba(255,255,255,0.06)",
+    }}>
+      <FadeIn delay={0}>
+        <p style={{
+          color: "#00E5FF", fontSize: "12px", letterSpacing: "0.15em",
+          textTransform: "uppercase", fontWeight: "600", marginBottom: "16px", fontFamily: "monospace",
+        }}>
+          // How we work together
+        </p>
+      </FadeIn>
+      <FadeIn delay={100}>
+        <h2 style={{
+          color: "white",
+          fontSize: isMobile ? "clamp(36px, 9vw, 52px)" : isTablet ? "52px" : "64px",
+          fontWeight: "700", letterSpacing: "-0.03em",
+          marginBottom: isMobile ? "48px" : "80px",
+        }}>
+          The Process
+        </h2>
+      </FadeIn>
+
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(4, 1fr)",
+        gap: isMobile ? "32px" : "24px",
+      }}>
+        {processSteps.map((step, i) => (
+          <FadeIn key={step.num} delay={i * 120}>
+            <div style={{ borderTop: "1px solid rgba(215,255,0,0.25)", paddingTop: "24px" }}>
+              <p style={{
+                color: "#D7FF00", fontFamily: "var(--font-geist-mono)",
+                fontSize: "13px", letterSpacing: "0.1em", marginBottom: "20px",
+              }}>
+                {step.num}
+              </p>
+              <h3 style={{
+                color: "white", fontSize: isMobile ? "20px" : "22px",
+                fontWeight: "700", marginBottom: "12px",
+              }}>
+                {step.title}
+              </h3>
+              <p style={{ color: "#888", fontSize: "14px", lineHeight: "1.7" }}>
+                {step.desc}
+              </p>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
 //  PAGE: Home
 // ════════════════════════════════════════════════════════════════════════════
 export default function Home() {
@@ -797,10 +992,13 @@ export default function Home() {
         </div>
       </div>
 
+      <MarqueeStrip />
+
       <Projects />
       <Services />
       <TechStack />
       <TestimonialsSection />
+      <Process />
       <CTASection />
       <Footer />
     </main>

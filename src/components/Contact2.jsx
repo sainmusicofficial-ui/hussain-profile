@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Mail, MapPin, Clock, Send } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Clock, Send, Calendar } from "lucide-react";
 
 const COLORS = {
   void: "#050505",
@@ -12,12 +12,16 @@ const COLORS = {
   subtext: "#71717A",
 };
 
+// ── Easy-to-edit config ──────────────────────────────────────────────
+const CAL_LINK = "https://cal.com/hussainkhan";
+const WHATSAPP_LINK =
+  "https://wa.me/917892309480?text=Hi%20Hussain%2C%20I%20found%20your%20portfolio%20and%20want%20to%20discuss%20a%20project";
+// ─────────────────────────────────────────────────────────────────────
+
 const socials = [
-  { label: "Dribbble", url: "#" },
   { label: "Behance", url: "https://www.behance.net/hussainkhan018" },
   { label: "LinkedIn", url: "https://www.linkedin.com/in/hussain-khan-667b1b227/" },
-  { label: "Twitter / X", url: "#" },
-  { label: "Instagram", url: "#" },
+  { label: "Instagram", url: "https://www.instagram.com/hussainkhan.design" },
 ];
 
 const fieldVariants = {
@@ -150,7 +154,7 @@ export default function Contact() {
     <div style={{ background: COLORS.void, minHeight: "100vh", paddingTop: "112px" }}>
 
       {/* Hero */}
-      <section className="contact-hero" style={{ position: "relative", overflow: "hidden", padding: "80px 60px 120px" }}>
+      <section className="contact-hero" style={{ position: "relative", overflow: "hidden", padding: "80px 60px 80px" }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -211,16 +215,119 @@ export default function Contact() {
             transition={{ delay: 0.3 }}
             style={{ fontSize: "18px", color: COLORS.subtext, maxWidth: "520px", lineHeight: "1.7", fontWeight: "300" }}
           >
-            Have a project in mind? Let's discuss how we can bring your vision
-            to life with strategic design and creative execution.
+            Have a project in mind? The fastest way to start is a quick
+            discovery call — or reach out on WhatsApp. Prefer to write it
+            out? The form below works too.
           </motion.p>
         </div>
       </section>
 
-      <div className="contact-divider" style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "0 60px" }} />
+      {/* ── PRIMARY: Booking + WhatsApp ─────────────────────────────── */}
+      <section className="contact-booking" style={{ padding: "0 60px 40px" }}>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{
+            borderRadius: "24px",
+            border: "1px solid rgba(215,255,0,0.15)",
+            background: "linear-gradient(135deg, rgba(215,255,0,0.04), rgba(0,240,255,0.02))",
+            padding: "40px",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "24px",
+          }}
+        >
+          <div style={{ maxWidth: "520px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
+              <motion.span
+                animate={{ opacity: [1, 0.4, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                style={{ width: "10px", height: "10px", borderRadius: "50%", background: COLORS.volt, boxShadow: `0 0 12px ${COLORS.volt}` }}
+              />
+              <span style={{ fontFamily: "monospace", fontSize: "12px", color: COLORS.volt, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                Currently booking — 2 slots for July
+              </span>
+            </div>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: "700", color: COLORS.content, lineHeight: "1.1", margin: "0 0 12px" }}>
+              Book a free discovery call
+            </h2>
+            <p style={{ fontSize: "15px", color: COLORS.subtext, lineHeight: "1.7", margin: 0 }}>
+              30 minutes to talk through your goals, timeline, and budget —
+              and an honest take on whether we're a fit. No pressure, no pitch.
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", minWidth: "220px" }}>
+            <a href={CAL_LINK} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  width: "100%",
+                  height: "56px",
+                  padding: "0 28px",
+                  borderRadius: "100px",
+                  border: "none",
+                  background: COLORS.volt,
+                  color: COLORS.void,
+                  fontWeight: "700",
+                  fontSize: "15px",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <Calendar size={18} />
+                Book a call
+              </motion.button>
+            </a>
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  width: "100%",
+                  height: "56px",
+                  padding: "0 28px",
+                  borderRadius: "100px",
+                  border: "1px solid rgba(37,211,102,0.5)",
+                  background: "transparent",
+                  color: "#25D366",
+                  fontWeight: "700",
+                  fontSize: "15px",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.359.101 11.892c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.899 11.899 0 005.71 1.454h.006c6.585 0 11.946-5.359 11.949-11.945a11.86 11.86 0 00-3.487-8.404z"/>
+                </svg>
+                WhatsApp
+              </motion.button>
+            </a>
+          </div>
+        </motion.div>
+      </section>
+
+      <div className="contact-divider" style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "24px 60px" }} />
+
+      <div className="contact-or" style={{ textAlign: "center", padding: "8px 60px 0" }}>
+        <p style={{ fontFamily: "monospace", fontSize: "12px", color: COLORS.subtext, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+          Or send a message
+        </p>
+      </div>
 
       {/* Form + Info */}
-      <section className="contact-section" style={{ padding: "64px 60px 128px" }}>
+      <section className="contact-section" style={{ padding: "40px 60px 128px" }}>
         <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "80px" }}>
 
           {/* Form */}
@@ -262,7 +369,7 @@ export default function Contact() {
                   <StyledInput
                     value={form.budget}
                     onChange={(e) => setForm({ ...form, budget: e.target.value })}
-                    placeholder="e.g. $2K - $5K"
+                    placeholder="e.g. ₹50K - ₹1L"
                   />
                 </FormField>
               </div>
@@ -395,7 +502,7 @@ export default function Contact() {
                 {
                   icon: <MapPin size={16} color={COLORS.cyan} />,
                   label: "Location",
-                  value: <p style={{ fontSize: "14px", color: COLORS.content, margin: 0 }}>Available Worldwide</p>,
+                  value: <p style={{ fontSize: "14px", color: COLORS.content, margin: 0 }}>Bangalore, India · Worldwide</p>,
                 },
                 {
                   icon: <Clock size={16} color={COLORS.subtext} />,
@@ -483,16 +590,20 @@ export default function Contact() {
         }
         @media (max-width: 900px) {
           .contact-grid { grid-template-columns: 1fr !important; gap: 56px !important; }
-          .contact-hero { padding: 56px 32px 80px !important; }
-          .contact-section { padding: 48px 32px 96px !important; }
-          .contact-divider { margin: 0 32px !important; }
+          .contact-hero { padding: 56px 32px 56px !important; }
+          .contact-booking { padding: 0 32px 32px !important; }
+          .contact-section { padding: 32px 32px 96px !important; }
+          .contact-divider { margin: 24px 32px !important; }
+          .contact-or { padding: 8px 32px 0 !important; }
         }
         @media (max-width: 640px) {
-          .contact-hero { padding: 40px 20px 56px !important; }
-          .contact-section { padding: 32px 20px 72px !important; }
+          .contact-hero { padding: 40px 20px 40px !important; }
+          .contact-booking { padding: 0 20px 24px !important; }
+          .contact-section { padding: 24px 20px 72px !important; }
           .contact-form-row { grid-template-columns: 1fr !important; gap: 20px !important; }
           .contact-grid { gap: 48px !important; }
-          .contact-divider { margin: 0 20px !important; }
+          .contact-divider { margin: 24px 20px !important; }
+          .contact-or { padding: 8px 20px 0 !important; }
         }
       `}</style>
     </div>

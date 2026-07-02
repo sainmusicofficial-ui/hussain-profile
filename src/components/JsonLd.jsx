@@ -196,7 +196,7 @@ export default function JsonLd() {
         name: "How many projects has Hussain Khan completed?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Hussain Khan has completed 50+ projects for 30+ clients across healthcare, hospitality, real estate, e-commerce, and professional services in 4+ years of freelance design work.",
+          text: "Hussain Khan has completed 20+ projects for 15+ clients across healthcare, hospitality, real estate, e-commerce, and professional services in 4+ years of freelance design work.",
         },
       },
       {
@@ -236,7 +236,7 @@ export default function JsonLd() {
         name: "How do I contact Hussain Khan?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "You can contact Hussain Khan by emailing hello@hussainkhan.co.in or using the contact form at hussainkhan.co.in/contact.",
+          text: "You can contact Hussain Khan by emailing hello@hussainkhan.co.in, booking a discovery call at cal.com/hussainkhan, or messaging on WhatsApp.",
         },
       },
     ],
